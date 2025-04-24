@@ -1,0 +1,73 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Contact Us</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; background-color: #f0f0f0; }
+    form { background: #fff; padding: 20px; border-radius: 10px; max-width: 400px; margin: auto; }
+    input, select, textarea, button { width: 100%; padding: 10px; margin-top: 10px; border: 1px solid #ccc; border-radius: 5px; }
+    button { background-color: #28a745; color: white; border: none; cursor: pointer; }
+    button:hover { background-color: #218838; }
+  </style>
+</head>
+<body>
+
+<h2 style="text-align:center;">Get in Touch</h2>
+
+<!-- Contact Form -->
+<section>
+  <form id="contactForm">
+    <input type="text" id="name" placeholder="Name" required>
+    <input type="email" id="email" placeholder="Email" required>
+    <input type="text" id="phone" placeholder="Phone" required>
+    <select id="country" required>
+      <option value="">Select Country</option>
+      <option value="India">India</option>
+      <option value="USA">USA</option>
+      <option value="UK">UK</option>
+      <option value="Canada">Canada</option>
+    </select>
+    <textarea id="message" placeholder="Message" required></textarea>
+    <label><input type="checkbox" id="terms" required> I accept the terms</label>
+    <button type="submit">Submit</button>
+  </form>
+</section>
+
+<script>
+document.getElementById("contactForm").addEventListener("submit", function(e){
+  e.preventDefault();
+
+  const data = {
+    name: document.getElementById("name").value,
+    email: document.getElementById("email").value,
+    phone: document.getElementById("phone").value,
+    country: document.getElementById("country").value,
+    message: document.getElementById("message").value,
+    termsAccepted: document.getElementById("terms").checked
+  };
+
+  fetch("https://script.google.com/macros/s/AKfycbzv-vuP4nx3avtiyT20h6ukvJj_hXVggn4TVW-6fq9uCY0OSYNfgE9iB7SyU_cN0SXMlw/exec", {
+    method: "POST",
+    headers: {
+      "Content-Type": "text/plain;charset=utf-8"
+    },
+    body: JSON.stringify(data),
+    redirect: "follow"
+  })
+  .then(res => res.text())
+  .then(response => {
+    alert("Form submitted successfully!");
+    document.getElementById("contactForm").reset();
+  })
+  .catch(err => {
+    alert("Submission failed: " + err.message);
+    console.error("Error:", err);
+  });
+});
+</script>
+
+</body>
+</html>
