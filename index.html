@@ -64,7 +64,7 @@
 <!-- Your CSS and JS -->
 <link rel="stylesheet" href="assets/css/style.css">
 <script src="assets/js/script.js" defer></script>
-
+ <script>
    function tryRemoveZohoFooter() {
     var footerDiv = document.querySelector('div[id^="zsada-"]');
     if (footerDiv) {
@@ -80,7 +80,6 @@
         }
     }
 }
-
 window.addEventListener('load', function() {
     tryRemoveZohoFooter.retryCount = 0; // Initialize retry count
     setTimeout(tryRemoveZohoFooter, 500); // Start the process after 500ms
