@@ -75,7 +75,32 @@ function tryRemoveZohoFooter() {
     }
 }
 window.addEventListener('load', function() {
-  setTimeout(tryRemoveZohoFooter, 500);
+ // Set up MutationObserver to watch for changes in the DOM
+    const observer = new MutationObserver(function(mutations) {
+        mutations.forEach(function(mutation) {
+            mutation.addedNodes.forEach(function(node) {
+                if (node.id && node.id.startsWith('zsada-')) {
+                    node.remove();  // Remove the Zoho footer if it appears
+                    console.log("Zoho footer removed!");
+                }
+            });
+        });
+    });
+
+    // Start observing the body for any changes in child nodes
+    observer.observe(document.body, {
+        childList: true,
+        subtree: true  // Monitor changes to all descendants (not just direct children)
+    });
+
+    // Try removing it immediately on load as well
+    setTimeout(function() {
+        var footerDiv = document.querySelector('div[id^="zsada-"]');
+        if (footerDiv) {
+            footerDiv.remove();
+            console.log("Zoho footer removed on load!");
+        }
+    }, 500);
 });
 </script>
 </body>
