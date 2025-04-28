@@ -65,6 +65,8 @@
 <link rel="stylesheet" href="assets/css/style.css">
 <script src="assets/js/script.js" defer></script>
  <script>
+<script>
+// Function to remove the Zoho footer
 function tryRemoveZohoFooter() {
     var footerDiv = document.querySelector('div[id^="zsada-"]');
     if (footerDiv) {
@@ -72,6 +74,7 @@ function tryRemoveZohoFooter() {
         console.log("Zoho footer removed!");
     }
 }
+
 // Function to keep checking and remove Zoho footer
 function startFooterRemoval() {
     var retries = 0;
@@ -91,10 +94,33 @@ function startFooterRemoval() {
     }, 100); // Retry every 100ms
 }
 
+// Use MutationObserver to monitor changes and remove footer if added dynamically
+function observeForZohoFooter() {
+    const observer = new MutationObserver(function(mutations) {
+        mutations.forEach(function(mutation) {
+            mutation.addedNodes.forEach(function(node) {
+                if (node.id && node.id.startsWith('zsada-')) {
+                    node.remove();  // Remove the footer if it appears
+                    console.log("Zoho footer removed via MutationObserver.");
+                }
+            });
+        });
+    });
+
+    // Start observing the body for any changes in child nodes
+    observer.observe(document.body, {
+        childList: true,
+        subtree: true  // Monitor changes to all descendants (not just direct children)
+    });
+}
+
 // Trigger removal on page load
 window.addEventListener('load', function() {
     // Start checking for the footer immediately
     startFooterRemoval();
+    
+    // Start the MutationObserver to detect footer dynamically
+    observeForZohoFooter();
     
     // Fallback: Hide the footer using CSS if it can't be removed
     var style = document.createElement('style');
@@ -102,21 +128,6 @@ window.addEventListener('load', function() {
     document.head.appendChild(style);
 });
 </script>
-    // Start observing the body for any changes in child nodes
-    observer.observe(document.body, {
-        childList: true,
-        subtree: true  // Monitor changes to all descendants (not just direct children)
-    });
-
-    // Try removing it immediately on load as well
-    setTimeout(function() {
-        var footerDiv = document.querySelector('div[id^="zsada-"]');
-        if (footerDiv) {
-            footerDiv.remove();
-            console.log("Zoho footer removed on load!");
-        }
-    }, 500);
-});
 </script>
 </body>
 </html></head><body class="" data-zs-display-mode="default" data-zs-home="false" data-zs-subsite="" style="padding-bottom: 60px; padding-top: 0px;"><a class="theme-skip-to-needed-content" href="https://www.blisstechsolutions.in/#thememaincontent">Skip to main content</a><div class="zpheader-style-04 theme-header-fixed theme-pages-full-stretch theme-mobile-header-style-01" data-headercontainer="zptheme-data-headercontainer" data-zs-mobile-headerstyle="01" style="top:0px;transition:0.3s linear;"><div class="theme-header-topbar theme-hide-res-topbar theme-topbar-not-in-header-05" data-dark-part-applied="false" data-theme-topbar="zptheme-topbar" style="opacity: 1;"><div class="zpcontainer"></div>
