@@ -66,20 +66,27 @@ window.addEventListener('load', function() {
 </div></div></div></div></div></div></div><div class="zpsection zpdefault-section zpdefault-section-bg zscustom-section-fixzee-03" data-element-id="elm_l9G3tPExU6qU5wm77F66Ig" data-element-type="section"><style type="text/css"> [data-element-id="elm_l9G3tPExU6qU5wm77F66Ig"].zpsection{ border-radius:1px; } </style><div class="zpcontainer-fluid zpcontainer"><div class="zprow zprow-container zpalign-items-flex-start zpjustify-content-flex-start zpdefault-section zpdefault-section-bg" data-element-id="elm_E78ku7dglXZpnd-tNEircQ" data-element-type="row" data-equal-column=""><style type="text/css"> [data-element-id="elm_E78ku7dglXZpnd-tNEircQ"].zprow{ border-radius:1px; } </style><div class="zpelem-col zpcol-12 zpcol-md-12 zpcol-sm-12 zpalign-self- zpdefault-section zpdefault-section-bg" data-element-id="elm_Gn6cadYO_Uj3BIOABlPyKw" data-element-type="column"><style type="text/css"> [data-element-id="elm_Gn6cadYO_Uj3BIOABlPyKw"].zpelem-col{ border-radius:1px; } </style>
 <style>
 <style>
-body {
-  margin: 0;
-  padding: 0;
-  background: #000; /* Set the page background to black if your video edges are black */
+.video-wrapper {
+  overflow: hidden;
+  width: 960px;
+  height: 480px;
 }
 
 video {
-  border: 0;
-  outline: 0;
-  display: block;
-  margin: 0 auto; /* center video horizontally */
-  background: transparent; /* just in case */
+  width: 1000px; /* a little zoomed in */
+  height: auto;
+  margin-left: -20px; /* move to left */
+  margin-top: -10px; /* move up if needed */
+  border: none;
 }
 </style>
+
+<div class="video-wrapper">
+  <video controls>
+    <source src="Blisstech Solutions Transforming Car Care Services_free.mp4" type="video/mp4">
+    Your browser does not support the video tag.
+  </video>
+</div>
     <video width="960" height="480" controls>
   <source src="Blisstech Solutions Transforming Car Care Services_free.mp4" type="video/mp4">
   Your browser does not support the video tag.
