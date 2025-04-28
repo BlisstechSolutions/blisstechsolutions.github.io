@@ -9,7 +9,7 @@ function tryRemoveZohoFooter() {
         footerDiv.remove();
         console.log("Zoho footer removed!");
     } else {
-        setTimeout(tryRemoveZohoFooter, 500); // Retry after 0.5 seconds
+        setTimeout(tryRemoveZohoFooter, 100); // Retry after 0.5 seconds
     }
 }
 
