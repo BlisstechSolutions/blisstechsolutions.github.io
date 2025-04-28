@@ -65,16 +65,27 @@
 <link rel="stylesheet" href="assets/css/style.css">
 <script src="assets/js/script.js" defer></script>
 
-    <script>
-function tryRemoveZohoFooter() {
+   function tryRemoveZohoFooter() {
     var footerDiv = document.querySelector('div[id^="zsada-"]');
     if (footerDiv) {
         footerDiv.remove();
         console.log("Zoho footer removed!");
     } else {
-        setTimeout(tryRemoveZohoFooter, 100); // Retry after 0.5 seconds
+        // Retry up to 20 times before giving up
+        if (tryRemoveZohoFooter.retryCount < 20) {
+            tryRemoveZohoFooter.retryCount++;
+            setTimeout(tryRemoveZohoFooter, 100); // Retry after 0.1 seconds
+        } else {
+            console.log("Zoho footer not found after multiple retries.");
+        }
     }
 }
+
+window.addEventListener('load', function() {
+    tryRemoveZohoFooter.retryCount = 0; // Initialize retry count
+    setTimeout(tryRemoveZohoFooter, 500); // Start the process after 500ms
+});
+</script>
 window.addEventListener('load', function() {
     setTimeout(tryRemoveZohoFooter, 500);
 });
