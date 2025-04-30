@@ -235,3 +235,31 @@ video {
 <a class="zplink-text" href="https://www.blisstechsolutions.in/contact-us" target="_self">
   Contact us
 </a>
+<script>
+document.getElementById("zsform_submit").addEventListener("click", function(e){
+  e.preventDefault();
+
+  const formData = new URLSearchParams();
+  formData.append("name", document.getElementById("Name_elm_ARM6HnHxWt_8zFiH1SRWmg").value);
+  formData.append("email", document.getElementById("Email_elm_ARM6HnHxWt_8zFiH1SRWmg").value);
+  formData.append("phone", document.getElementById("Phone_elm_ARM6HnHxWt_8zFiH1SRWmg").value);
+  formData.append("country", document.getElementById("Country_elm_ARM6HnHxWt_8zFiH1SRWmg").value);
+  formData.append("message", document.getElementById("Multiline_elm_ARM6HnHxWt_8zFiH1SRWmg").value);
+  formData.append("termsAccepted", document.getElementById("Terms-conditions_elm_ARM6HnHxWt_8zFiH1SRWmg-declaration").checked ? "Yes" : "No");
+
+  fetch("https://script.google.com/macros/s/AKfycbzv-vuP4nx3avtiyT20h6ukvJj_hXVggn4TVW-6fq9uCY0OSYNfgE9iB7SyU_cN0SXMlw/exec", {
+    method: "POST",
+    body: formData
+  })
+  .then(res => res.text())
+  .then(response => {
+    alert("Form submitted successfully!");
+    document.querySelector("form").reset();
+  })
+  .catch(err => {
+    alert("Submission failed: " + err.message);
+    console.error(err);
+  });
+});
+</script>
+</body></html>
