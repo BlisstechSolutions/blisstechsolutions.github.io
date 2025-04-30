@@ -1,5 +1,6 @@
+
 /*$Id$*/
-(function() {
+/*(function() {
     if("undefined" === typeof(__ZSAD)){
         var __ZSAD = {}
         window.__ZSAD = __ZSAD;
@@ -22,3 +23,4 @@
         }
     }
 }());
+*/
