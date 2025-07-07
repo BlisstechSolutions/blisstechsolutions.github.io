@@ -327,14 +327,17 @@ input:focus, textarea:focus {
     transition: all 0.3s ease-in-out;
     z-index: 1000;
     overflow: hidden;
+    /* Mobile styles for collapsed state */
     @media (max-width: 768px) {
         bottom: 10px;
         right: 10px;
+        width: 60px; /* Slightly smaller on small screens */
+        height: 60px;
     }
 }
 
 #qa-side-panel.expanded {
-    width: min(50vw, 360px);
+    width: min(50vw, 480px);
     height: 70vh;
     min-height: 400px;
     /* Glassmorphism properties for the expanded panel */
@@ -346,14 +349,17 @@ input:focus, textarea:focus {
 
     border-radius: 1rem;
     right: 20px;
+    /* Adjusted Mobile styles for expanded state */
     @media (max-width: 768px) {
         width: 90vw;
-        height: 80vh;
-        bottom: 5vh;
+        height: calc(95vh - env(safe-area-inset-bottom)); /* Use 95vh minus safe area for dynamic height */
+        min-height: unset; /* Remove min-height override on mobile */
+        bottom: env(safe-area-inset-bottom, 5px); /* Anchor to bottom, respect safe area */
         left: 5vw;
         right: 5vw;
         max-width: unset;
         border-radius: 1.5rem;
+        top: auto; /* Ensure it sticks to the bottom */
     }
 }
 
@@ -373,7 +379,7 @@ input:focus, textarea:focus {
 #qa-side-panel.expanded #qa-side-panel-toggle-btn {
     color: var(--color-text-dark);
     position: absolute;
-    top: 10px;
+    top: 10px; /* Keep close button near the top of the panel */
     right: 10px;
     width: 40px;
     height: 40px;
@@ -767,7 +773,7 @@ input:focus, textarea:focus {
     <footer class="bg-blisstech-slate text-white py-24 text-center rounded-t-3xl shadow-lg">
         <div class="container mx-auto px-12">
             <p>&copy; 2025 Blisstech Solutions Pvt Ltd.</p>
-            <p class="text mt-4">support@blisstechsolutions.in | CIN No: U62013DL2024PTC437479</p>
+            <p class="text mt-4">support@blisstechsolutions.in | CIN No: Uxxxxxxx</p>
             <div class="mt-10 text flex justify-center space-x-6">
                             <a href="#" class="text-white/80 hover:text-white transition duration-200">Privacy Policy</a>
                             <a href="#" class="text-white/80 hover:text-white transition duration-200">Terms of Service</a>
@@ -1057,7 +1063,7 @@ const animationSpeedMultiplier = 1.8; // Increased to 1.8x
                 },
                 {
                     id: "contactPreference",
-                    text: "Thanks, [Previous Answer]! How would you prefer we get in touch for details? You can provide a phone number or an email, or both. Or, you can skip if you prefer we only use the details provided at the end of the chat.",
+                    text: "Thanks, [userName]! How would you prefer we get in touch for details? You can provide a phone number or an email, or both. Or, you can skip if you prefer we only use the details provided at the end of the chat.",
                     type: "custom_contact_input", // Custom type for phone/email with skip
                     placeholder: { phone: "Your phone number (optional)", email: "Your email (optional)" }
                 },
@@ -1081,7 +1087,7 @@ const animationSpeedMultiplier = 1.8; // Increased to 1.8x
                 },
                 {
                     id: "finalContactConfirm",
-                    text: "Awesome! Just to confirm, you can still reach us via email at support@blisstechsolutions.in. Shall I submit your inquiry?",
+                    text: "Thank you for providing your information! Shall I submit your inquiry? We'll be in touch shortly.",
                     type: "buttons",
                     options: [
                         { display: "Submit Inquiry", value: "submit" },
@@ -1109,11 +1115,9 @@ const animationSpeedMultiplier = 1.8; // Increased to 1.8x
                     const q = qaQuestions[currentQuestionIndex];
                     let questionText = q.text;
 
-                    // Replace placeholder in question text if available
-                    if (q.id === "userName" && capturedAnswers.initialGreeting) {
-                        // No replacement needed for name, it's the first actual data point
-                    } else if (q.id === "contactPreference" && capturedAnswers.userName) {
-                        questionText = questionText.replace('[Previous Answer]', capturedAnswers.userName);
+                    // Replace placeholders in question text
+                    if (q.id === "contactPreference" && capturedAnswers.userName) {
+                        questionText = questionText.replace('[userName]', capturedAnswers.userName);
                     } else if (q.id === "projectNeeds" && capturedAnswers.serviceType) {
                         questionText = questionText.replace('[Previous Answer]', capturedAnswers.serviceType);
                     }
@@ -1141,7 +1145,7 @@ const animationSpeedMultiplier = 1.8; // Increased to 1.8x
                         const inputDiv = document.createElement('div');
                         inputDiv.className = 'qa-input-area';
                         const inputField = document.createElement('input');
-                        inputField.type = (q.id === "contactEmail") ? "email" : "text"; // Placeholder for future email if directly asked
+                        inputField.type = (q.id === "contactEmail") ? "email" : "text"; // Although contactEmail is now part of custom_contact_input, keeping this for robustness
                         inputField.id = `qa-input-${q.id}`;
                         inputField.placeholder = q.placeholder;
                         inputField.className = 'flex-grow px-4 py-2 border border-gray-300 rounded-l-xl focus:outline-none focus:ring-2 focus:ring-blisstech-primary';
@@ -1176,6 +1180,11 @@ const animationSpeedMultiplier = 1.8; // Increased to 1.8x
                         phoneInputField.id = 'qa-input-phone';
                         phoneInputField.placeholder = q.placeholder.phone;
                         phoneInputField.className = 'w-full rounded-r-xl border-2 border-gray-200 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blisstech-primary';
+                        // Pre-fill if already captured
+                        if (capturedAnswers.contactPhone && capturedAnswers.contactPhone !== 'Not provided' && capturedAnswers.contactPhone.startsWith('+')) {
+                            phoneCodeSelect.value = capturedAnswers.contactPhone.split(' ')[0];
+                            phoneInputField.value = capturedAnswers.contactPhone.split(' ')[1] || '';
+                        }
                         phoneInputContainer.appendChild(phoneCodeSelect);
                         phoneInputContainer.appendChild(phoneInputField);
                         contactInputDiv.appendChild(phoneInputContainer);
@@ -1186,30 +1195,46 @@ const animationSpeedMultiplier = 1.8; // Increased to 1.8x
                         emailInputField.id = 'qa-input-email';
                         emailInputField.placeholder = q.placeholder.email;
                         emailInputField.className = 'w-full px-4 py-2 rounded-xl border-2 border-gray-200 focus:outline-none focus:ring-2 focus:ring-blisstech-primary';
+                        // Pre-fill if already captured
+                        if (capturedAnswers.contactEmail && capturedAnswers.contactEmail !== 'Not provided') {
+                            emailInputField.value = capturedAnswers.contactEmail;
+                        }
                         contactInputDiv.appendChild(emailInputField);
 
                         // Buttons for submitting or skipping
                         const buttonsDiv = document.createElement('div');
                         buttonsDiv.className = 'flex flex-col sm:flex-row gap-2 mt-4';
 
-                        const submitButton = document.createElement('button');
-                        submitButton.textContent = "Continue";
-                        submitButton.classList.add('qa-question-button', 'bg-blisstech-primary', 'hover:bg-indigo-700');
-                        submitButton.onclick = () => handleContactInput(phoneCodeSelect.value + phoneInputField.value, emailInputField.value);
-                        buttonsDiv.appendChild(submitButton);
+                        const continueButton = document.createElement('button');
+                        continueButton.textContent = "Continue";
+                        continueButton.classList.add('qa-question-button', 'bg-blisstech-primary', 'hover:bg-indigo-700');
+                        continueButton.onclick = () => handleContactInput(phoneCodeSelect.value + ' ' + phoneInputField.value, emailInputField.value);
+                        buttonsDiv.appendChild(continueButton);
 
                         const skipButton = document.createElement('button');
                         skipButton.textContent = "Skip for now";
                         skipButton.classList.add('qa-question-button', 'bg-gray-500', 'hover:bg-gray-600');
-                        skipButton.onclick = () => handleContactInput('', ''); // Pass empty values to skip
+                        skipButton.onclick = () => handleContactInput('', '', true); // Pass true for isSkipped
                         buttonsDiv.appendChild(skipButton);
 
-                        contactInputDiv.appendChild(buttonsDiv);
                         qaCurrentQuestionArea.appendChild(contactInputDiv);
                     }
                 } else {
-                    // All questions answered, trigger final confirmation/submit
-                    displayQuestion(); // Call again to show the final confirmation
+                    // This block handles the case when all questions are answered, and it proceeds to the final confirmation.
+                    // The 'finalContactConfirm' question is designed to be the last one, with buttons to submit or cancel.
+                    // If we reach here and it's not the final confirmation, it means the chat flow needs to conclude.
+                    // This ensures the bot's final confirmation message is always displayed correctly.
+                    const finalQuestion = qaQuestions.find(q => q.id === "finalContactConfirm");
+                    if (finalQuestion) {
+                        // Temporarily set currentQuestionIndex to point to finalContactConfirm
+                        currentQuestionIndex = qaQuestions.indexOf(finalQuestion);
+                        localStorage.setItem('qaCurrentIndex', currentQuestionIndex.toString());
+                        displayQuestion(); // Recurse to display the final confirmation
+                    } else {
+                         // Fallback if finalContactConfirm isn't found (shouldn't happen with current setup)
+                        appendMessage("Thank you for your responses. Your inquiry is being submitted.", 'bot');
+                        setTimeout(() => handleSubmit(), 1000);
+                    }
                 }
             }
 
@@ -1255,22 +1280,26 @@ const animationSpeedMultiplier = 1.8; // Increased to 1.8x
                 }
             }
 
-            function handleContactInput(phoneNumber, email) {
-                // Validate if at least one contact method is provided, unless both are empty (user skipped)
-                if ((phoneNumber.trim() === '' && email.trim() === '') && capturedAnswers.contactPreference === undefined) {
-                     // This condition ensures that 'Skip for now' on the contact preference question is allowed
-                     capturedAnswers.contactPreference = 'skipped';
-                     appendMessage("No contact details provided yet.", 'user');
-                } else if (phoneNumber.trim() === '' && email.trim() === '') {
-                    // If user tries to proceed without anything after previously having entered something, or if this is not the initial skip.
-                    appendMessage("Please provide either a phone number or an email to proceed, or use the 'Skip for now' button if available.", 'bot');
-                    return; // Stay on the same question
-                } else {
-                    capturedAnswers.contactPhone = phoneNumber.trim();
-                    capturedAnswers.contactEmail = email.trim();
-                    appendMessage(`Phone: ${phoneNumber.trim() || 'N/A'}, Email: ${email.trim() || 'N/A'}`, 'user');
-                }
+            function handleContactInput(phoneNumber, email, isSkipped = false) {
+                const currentPhoneNumber = phoneNumber.trim();
+                const currentEmail = email.trim();
 
+                // If both are empty AND user did NOT explicitly click "Skip for now" (isSkipped is false)
+                if (currentPhoneNumber === '' && currentEmail === '' && !isSkipped) {
+                    appendMessage("Please provide either a phone number or an email to proceed, or use the 'Skip for now' button.", 'bot');
+                    return; // Stay on the same question
+                }
+                
+                // If user skipped or provided contact
+                capturedAnswers.contactPhone = currentPhoneNumber || 'Not provided';
+                capturedAnswers.contactEmail = currentEmail || 'Not provided';
+
+                if (isSkipped) {
+                     appendMessage("Contact details skipped for now.", 'user');
+                } else {
+                     appendMessage(`Phone: ${capturedAnswers.contactPhone}, Email: ${capturedAnswers.contactEmail}`, 'user');
+                }
+               
                 currentQuestionIndex++;
                 localStorage.setItem('qaData', JSON.stringify(capturedAnswers));
                 localStorage.setItem('qaCurrentIndex', currentQuestionIndex.toString());
@@ -1283,7 +1312,7 @@ const animationSpeedMultiplier = 1.8; // Increased to 1.8x
 
                 const userName = capturedAnswers.userName || 'Chatbot User';
                 const serviceType = capturedAnswers.serviceType || 'Not specified';
-                const projectNeeds = capturedAnswers.projectNeeds || 'Not specified';
+                const projectNeeds = capturedAnswers.answers?.projectNeeds || capturedAnswers.projectNeeds || 'Not specified'; // Adjusted to check both possibilities
                 const contactPhone = capturedAnswers.contactPhone || 'Not provided';
                 const contactEmail = capturedAnswers.contactEmail || 'Not provided';
 
@@ -1309,7 +1338,11 @@ const animationSpeedMultiplier = 1.8; // Increased to 1.8x
                 
                 const contactAppsScriptUrl = "https://script.google.com/macros/s/AKfycbzv-vuP4nx3avtiyT20h6ukvJj_hXVggn4TVW-6fq9uCY0OSYNfgE9iB7SyU_cN0SXMlw/exec"; 
 
-                appendMessage("Submitting your inquiry...", 'bot');
+                // Ensure the "Submitting your inquiry..." message is appended only once before fetch
+                const lastHistoryMessage = qaHistory.lastChild ? qaHistory.lastChild.textContent.trim() : '';
+                if (!lastHistoryMessage.includes("Submitting your inquiry...")) {
+                    appendMessage("Submitting your inquiry...", 'bot');
+                }
 
                 fetch(contactAppsScriptUrl, {
                     method: 'POST',
@@ -1356,7 +1389,7 @@ const animationSpeedMultiplier = 1.8; // Increased to 1.8x
                         }, 500);
                     } else {
                        qaHistory.scrollTop = qaHistory.scrollHeight;
-                       displayQuestion();
+                       displayQuestion(); // Display current question if already open
                     }
                 } else {
                     qaToggleBtn.querySelector('.chat-icon').classList.toggle('hidden');
