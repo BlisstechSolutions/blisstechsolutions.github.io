@@ -1135,6 +1135,9 @@ input:focus, textarea:focus {
                         });
 
                         qaCurrentQuestionArea.appendChild(inputDiv);
+			    
+    inputDiv.appendChild(inputField);  // 🔧 This was missing
+    inputDiv.appendChild(sendButton); // 🔧 This was missing
                         inputField.focus();
                     }
                 } else {
