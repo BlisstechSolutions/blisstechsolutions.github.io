@@ -1,1521 +1,335 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Blisstech Solutions Pvt Ltd - Build Smart. Support Lean. Scale Fast.</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-<style>
-/* Custom CSS variables for precise color and font application */
-
-/* Updated Playful Orange & Golden Yellow Combo with Glassmorphism in mind */
-:root {
-    /* Background - A dynamic radial gradient to make the glass effect pop */
-    --color-background: radial-gradient(circle at top left, #FFEBCE, #FF7F50, #FFC700); /* Soft apricot, coral orange, golden yellow */
-    --color-background-softwhite: #FFF8E1; /* A soft, creamy yellow-white for solid sections */
-
-    /* Primary text & button colors */
-    --color-primary: #FF7F50; /* Coral Orange - warm and energetic */
-    --color-accent: #1FC756; /* Golden Yellow - brilliant and complements the orange */
-    --color-text-dark: #1E1E1E; /* Dark gray for legibility on light backgrounds */
-    --color-text-secondary: #555555; /* Slightly lighter gray for secondary text */
-
-    /* Contrasting accents */
-    --color-highlight: #FFC700; /* Golden Yellow */
-    --color-warm-red: #FF3D00; /* Warm red for alerts */
-    --color-purple-pop: #A78BFA; /* Light purple for surprising detail */
-
-    /* Glassmorphism properties */
-    --glass-blur-strength: 15px; /* Adjust this value to control the blur intensity */
-    --glass-bg-color: rgba(255, 255, 255, 0.15); /* A very light, semi-transparent white */
-    --glass-border-color: rgba(255, 255, 255, 0.2); /* A slightly more opaque white for the border */
-    --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.2); /* A subtle bluish shadow for depth */
-}
-
-/* Apply custom fonts and text color */
-body {
-    font-family: var(--font-secondary);
-    color: var(--color-text-dark);
-    background: var(--color-background); /* Apply the new dynamic background */
-    background-attachment: fixed; /* Ensures the background stays in place for the blur effect */
-    line-height: 1.6;
-    cursor: default;
-}
-
-h1, h2, h3, h4, h5, h6 {
-    font-family: var(--font-primary);
-    color: var(--color-primary);
-    line-height: 1.2;
-}
-
-/* Custom Tailwind-like classes for precise color mapping */
-.bg-blisstech-primary { background-color: var(--color-primary); }
-.text-blisstech-primary { color: var(--color-primary); }
-.bg-blisstech-accent { 
-    background-color: var(--color-accent); 
-    color: var(--color-text-dark);
-}
-.text-blisstech-accent { color: var(--color-accent); }
-.bg-blisstech-background { 
-    background-color: var(--color-background-softwhite);
-    color: var(--color-text-dark); /* Ensure dark text on this light background */
-}
-.text-blisstech-slate { color: var(--color-text-dark); }
-
-/* Value-driven enhancements */
-/* Subtle lift and shadow on hover for sections, excluding hero/footer */
-.section-hover-effect:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.12);
-    transition: all 0.3s ease-in-out;
-}
-
-/* More distinct button hover with a subtle border effect and refined shadow */
-.btn-primary {
-    /* Main CTA: Coral Orange with White text */
-    background-color: var(--color-primary);
-    color: white; /* Ensure text is readable */
-    border: 2px solid transparent;
-    transition: all 0.3s ease-in-out;
-    position: relative;
-    overflow: hidden;
-    z-index: 1;
-}
-.btn-primary:hover {
-    border-color: var(--color-accent);
-    transform: translateY(-2px) scale(1.01);
-    box-shadow: 0 8px 18px rgba(255, 127, 80, 0.4);
-}
-.btn-accent {
-    /* Updated Secondary CTA: Dark Gray with White text for emphasis */
-    background-color: var(--color-text-dark);
-    color: white; /* Ensure text is readable */
-    border: 2px solid transparent;
-    transition: all 0.3s ease-in-out;
-    position: relative;
-    overflow: hidden;
-    z-index: 1;
-}
-.btn-accent:hover {
-    border-color: var(--color-primary);
-    transform: translateY(-2px) scale(1.01);
-    box-shadow: 0 8px 18px rgba(255, 199, 0, 0.4);
-}
-
-/* Shine effect for buttons */
-.btn-primary::before, .btn-accent::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -75%;
-    width: 50%;
-    height: 100%;
-    background: rgba(255, 255, 255, 0.3);
-    transform: skewX(-20deg);
-    transition: all 0.5s ease-in-out;
-    z-index: -1;
-}
-
-.btn-primary:hover::before, .btn-accent:hover::before {
-    left: 125%;
-}
-
-/* Add a very subtle text shadow to main headings for crispness */
-.heading-shadow {
-    text-shadow: 1px 1px 3px rgba(0,0,0,0.08);
-}
-
-/* Enhanced form field focus */
-input:focus, textarea:focus {
-    border-color: var(--color-primary);
-    box-shadow: 0 0 0 4px rgba(255, 127, 80, 0.25);
-    outline: none;
-}
-
-/* BlissMeeting SVG Animations and Styling */
-.blissmeeting-visual-container {
-    position: relative;
-    width: 100%;
-    padding-bottom: 56.25%;
-    height: 0;
-    overflow: hidden;
-    background-color: #333333;
-    border-radius: 1rem;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-}
-
-.blissmeeting-svg {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-}
-
-.svg-circle-pulse { animation: circle-pulse 3s infinite ease-in-out; transform-origin: center; }
-.svg-circle-pulse-delay-1 { animation-delay: 0.5s; }
-.svg-circle-pulse-delay-2 { animation-delay: 1s; }
-
-@keyframes circle-pulse {
-    0% { r: 5; opacity: 0.8; }
-    50% { r: 10; opacity: 0.3; }
-    100% { r: 5; opacity: 0.8; }
-}
-
-.svg-line-animate { animation: line-draw 4s infinite ease-in-out alternate; }
-.svg-line-animate-delay-1 { animation-delay: 1s; }
-.svg-line-animate-delay-2 { animation-delay: 2s; }
-
-@keyframes line-draw {
-    0% { stroke-dashoffset: 100; opacity: 0.5; }
-    50% { stroke-dashoffset: 0; opacity: 1; }
-    100% { stroke-dashoffset: 100; opacity: 0.5; }
-}
-
-.svg-data-flow { animation: data-flow 2s infinite linear; }
-@keyframes data-flow {
-    0% { transform: translateX(0); opacity: 0; }
-    20% { opacity: 1; }
-    80% { opacity: 1; }
-    100% { transform: translateX(20px); opacity: 0; }
-}
-
-/* Hero banner NEW SVG animation styling - Abstract progression */
-.hero-banner-3d-container {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 0;
-    overflow: hidden;
-    background-color: #333333;
-}
-#heroCanvas {
-    display: block;
-    width: 100%;
-    height: 100%;
-}
-
-/* Scroll-reveal animations */
-.reveal-element {
-    opacity: 0;
-    transform: translateY(20px);
-    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
-    will-change: opacity, transform;
-}
-.reveal-element.is-visible {
-    opacity: 1;
-    transform: translateY(0);
-}
-.fade-in-up-stagger > *:nth-child(1) { transition-delay: 0s; }
-.fade-in-up-stagger > *:nth-child(2) { transition-delay: 0.1s; }
-.fade-in-up-stagger > *:nth-child(3) { transition-delay: 0.2s; }
-.fade-in-up-stagger > *:nth-child(4) { transition-delay: 0.3s; }
-.fade-in-up-stagger > *:nth-child(5) { transition-delay: 0.4s; }
-.fade-in-up-stagger > *:nth-child(6) { transition-delay: 0.5s; }
-.fade-in-up-stagger > *:nth-child(7) { transition-delay: 0.6s; }
-.fade-in-up-stagger > *:nth-child(8) { transition-delay: 0.7s; }
-.fade-in-up-stagger > *:nth-child(9) { transition-delay: 0.8s; }
-.fade-in-up-stagger > *:nth-child(10) { transition-delay: 0.9s; }
-
-/* Testimonial specific styling - Now with Glassmorphism! */
-.testimonial-card {
-    /* Glassmorphism properties */
-    background: var(--glass-bg-color);
-    backdrop-filter: blur(var(--glass-blur-strength));
-    -webkit-backdrop-filter: blur(var(--glass-blur-strength));
-    border: 1px solid var(--glass-border-color);
-    box-shadow: var(--glass-shadow);
-    border-radius: 1.5rem;
-    padding: 2.5rem;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    height: auto;
-    min-height: 200px;
-    justify-content: center;
-    transition: all 0.3s ease-in-out;
-}
-.testimonial-card:hover {
-    transform: scale(1.03);
-    box-shadow: 0 12px 40px 0 rgba(31, 38, 135, 0.3);
-}
-
-.testimonial-quote {
-    font-size: 1.25rem;
-    font-style: italic;
-    color: var(--color-text-dark);
-    margin-bottom: 1.5rem;
-    line-height: 1.5;
-}
-
-.testimonial-author {
-    font-weight: 600;
-    color: var(--color-primary);
-    font-size: 1.125rem;
-}
-
-.testimonial-title {
-    font-size: 0.9rem;
-    color: var(--color-text-secondary);
-}
-
-/* Logo carousel styling */
-.logo-carousel-container {
-    overflow: hidden;
-    position: relative;
-    width: 100%;
-}
-
-.logo-carousel-track {
-    display: flex;
-    width: max-content;
-    animation: scroll-logos 30s linear infinite;
-}
-
-.logo-carousel-track:hover {
-    animation-play-state: paused;
-}
-
-.logo-item {
-    flex-shrink: 0;
-    margin: 0 2.5rem;
-    height: 4rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    filter: grayscale(100%);
-    opacity: 0.6;
-    transition: filter 0.3s ease, opacity 0.3s ease;
-}
-
-.logo-item:hover {
-    filter: grayscale(0%);
-    opacity: 1;
-}
-
-.logo-item img {
-    max-height: 100%;
-    width: auto;
-    object-fit: contain;
-}
-
-@keyframes scroll-logos {
-    0% { transform: translateX(0); }
-    100% { transform: translateX(calc(-50% - 2.5rem)); }
-}
-
-/* Q&A Side Panel - Now with Glassmorphism! */
-#qa-side-panel {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    width: 80px;
-    height: 80px;
-    background-color: var(--color-primary);
-    border-radius: 50%;
-    box-shadow: 0 8px 16px rgba(0,0,0,0.3);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: all 0.3s ease-in-out;
-    z-index: 1000;
-    overflow: hidden;
-    /* Mobile styles for collapsed state */
-    @media (max-width: 768px) {
-        bottom: 10px;
-        right: 10px;
-        width: 60px; /* Slightly smaller on small screens */
-        height: 60px;
-    }
-}
-
-#qa-side-panel.expanded {
-    width: min(50vw, 480px);
-    height: 70vh;
-    min-height: 400px;
-    /* Glassmorphism properties for the expanded panel */
-    background: var(--glass-bg-color);
-    backdrop-filter: blur(var(--glass-blur-strength));
-    -webkit-backdrop-filter: blur(var(--glass-blur-strength));
-    border: 1px solid var(--glass-border-color);
-    box-shadow: var(--glass-shadow);
-
-    border-radius: 1rem;
-    right: 20px;
-    /* Adjusted Mobile styles for expanded state */
-    @media (max-width: 768px) {
-        width: 90vw;
-        height: calc(95vh - env(safe-area-inset-bottom)); /* Use 95vh minus safe area for dynamic height */
-        min-height: unset; /* Remove min-height override on mobile */
-        bottom: env(safe-area-inset-bottom, 5px); /* Anchor to bottom, respect safe area */
-        left: 5vw;
-        right: 5vw;
-        max-width: unset;
-        border-radius: 1.5rem;
-        top: auto; /* Ensure it sticks to the bottom */
-    }
-}
-
-#qa-side-panel-toggle-btn {
-    background-color: transparent;
-    border: none;
-    color: white;
-    font-size: 2rem;
-    cursor: pointer;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-#qa-side-panel-toggle-btn .icon { transition: transform 0.3s ease-in-out; }
-#qa-side-panel.expanded #qa-side-panel-toggle-btn {
-    color: var(--color-text-dark);
-    position: absolute;
-    top: 10px; /* Keep close button near the top of the panel */
-    right: 10px;
-    width: 40px;
-    height: 40px;
-    font-size: 1.5rem;
-    transform: none;
-}
-#qa-side-panel:not(.expanded) #qa-side-panel-toggle-btn .chat-icon { display: block; }
-#qa-side-panel.expanded #qa-side-panel-toggle-btn .chat-icon { display: none; }
-#qa-side-panel:not(.expanded) #qa-side-panel-toggle-btn .close-icon { display: none; }
-#qa-side-panel.expanded #qa-side-panel-toggle-btn .close-icon { display: block; }
-
-#qa-panel-content {
-    display: none;
-    flex-grow: 1;
-    width: 100%;
-    padding: 1.5rem;
-    padding-top: 50px;
-    flex-direction: column;
-}
-#qa-side-panel.expanded #qa-panel-content { display: flex; }
-
-.qa-container {
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-    background-color: transparent;
-}
-.qa-message-history {
-    flex-grow: 1;
-    overflow-y: auto;
-    border: 1px solid #e5e7eb;
-    border-radius: 0.5rem;
-    padding: 1rem;
-    margin-bottom: 1rem;
-    background-color: #f9fafb;
-    max-height: 300px;
-}
-.qa-message { margin-bottom: 0.75rem; line-height: 1.4; animation: fadeInMessage 0.3s ease-out forwards; }
-.qa-message.user { text-align: right; }
-.qa-message.bot { text-align: left; }
-.qa-message-bubble { display: inline-block; padding: 0.75rem 1rem; border-radius: 1rem; max-width: 80%; word-wrap: break-word; }
-.qa-message.user .qa-message-bubble { background-color: var(--color-primary); color: white; }
-.qa-message.bot .qa-message-bubble { background-color: #e5e7eb; color: #1f2937; }
-@keyframes fadeInMessage { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
-.qa-current-question-container { display: flex; flex-direction: column; gap: 0.75rem; }
-.qa-question-button {
-    background-color: var(--color-text-dark);
-    color: white;
-    padding: 0.75rem 1rem;
-    border-radius: 0.5rem;
-    cursor: pointer;
-    transition: background-color 0.2s ease;
-}
-.qa-question-button:hover { background-color: #444444; }
-.qa-input-area { display: flex; margin-top: 1rem; }
-.qa-input-area input { flex-grow: 1; padding: 0.75rem 1rem; border: 1px solid #d1d5db; border-radius: 0.5rem 0 0 0.5rem; outline: none; }
-.qa-input-area button {
-    background-color: var(--color-primary);
-    color: white;
-    padding: 0.75rem 1.25rem;
-    border-radius: 0 0.5rem 0.5rem 0;
-    cursor: pointer;
-    transition: background-color 0.2s ease;
-}
-.qa-input-area button:hover { background-color: #E6613F; }
-
-</style>
-</head>
-<body>
-
-    <header class="bg-white shadow-sm py-4 relative z-50">
-        <div class="container mx-auto px-4 flex justify-between items-center">
-          <div class="flex itme-center gap-3">
-                <img src="https://raw.githubusercontent.com/BlisstechSolutions/blisstechsolutions.github.io/refs/heads/main/assets/img/bs_logo.png" alt="Blisstech Logo" class="w-28 object-fit">
-                </div>
-            <nav class="hidden md:block">
-                <ul class="flex space-x-6">
-                    <li><a href="#our-vision" class="text-blisstech-slate hover:text-blisstech-primary font-medium transition duration-200">Our Vision</a></li>
-                    <li><a href="#services" class="text-blisstech-slate hover:text-blisstech-primary font-medium transition duration-200">Services</a></li>
-                    <li><a href="#testimonials" class="text-blisstech-slate hover:text-blisstech-primary font-medium transition duration-200">Testimonials</a></li>
-                    <li><a href="#our-products" class="text-blisstech-slate hover:text-blisstech-primary font-medium transition duration-200">Our Products</a></li>
-                    <li><a href="#investor" class="text-blisstech-slate hover:text-blisstech-primary font-medium transition duration-200">Investor Corner</a></li>
-                    <li><a href="#contact" class="text-blisstech-slate hover:text-blisstech-primary font-medium transition duration-200">Contact</a></li>
-                </ul>
-            </nav>
-            <button id="mobile-menu-button" class="md:hidden p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blisstech-primary">
-                <svg class="w-6 h-6 text-blisstech-slate" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-                </svg>
-            </button>
-        </div>
-        <div id="mobile-menu" class="hidden md:hidden absolute top-full left-0 w-full bg-white shadow-lg py-4">
-            <ul class="flex flex-col items-center space-y-4">
-                <li><a href="#our-vision" class="text-blisstech-slate hover:text-blisstech-primary font-medium py-2 block w-full text-center" onclick="document.getElementById('mobile-menu').classList.add('hidden');">Our Vision</a></li>
-                <li><a href="#services" class="text-blisstech-slate hover:text-blisstech-primary font-medium py-2 block w-full text-center" onclick="document.getElementById('mobile-menu').classList.add('hidden');">Services</a></li>
-                <li><a href="#testimonials" class="text-blisstech-slate hover:text-blisstech-primary font-medium py-2 block w-full text-center" onclick="document.getElementById('mobile-menu').classList.add('hidden');">Testimonials</a></li>
-                <li><a href="#our-products" class="text-blisstech-slate hover:text-blisstech-primary font-medium py-2 block w-full text-center" onclick="document.getElementById('mobile-menu').classList.add('hidden');">Our Products</a></li>
-                <li><a href="#investor" class="text-blisstech-slate hover:text-blisstech-primary font-medium py-2 block w-full text-center" onclick="document.getElementById('mobile-menu').classList.add('hidden');">Investor Corner</a></li>
-                <li><a href="#contact" class="text-blisstech-slate hover:text-blisstech-primary font-medium py-2 block w-full text-center" onclick="document.getElementById('mobile-menu').classList.add('hidden');">Contact</a></li>
-            </ul>
-        </div>
-    </header>
-
-    <main>
-        <section class="bg-[#1A202C] text-white py-24 text-center shadow-lg mb-20 overflow-hidden relative">
-            <div class="hero-banner-3d-container">
-                <canvas id="heroCanvas"></canvas>
-            </div>
-
-            <div class="container mx-auto px-4 relative z-10">
-                <h1 class="text-5xl md:text-7xl font-bold mb-6 font-poppins leading-tight heading-shadow text-white drop-shadow-lg">Build Smart. Support Lean. <br>Scale Fast.</h1>
-                <p class="text-xl md:text-2xl mb-10 max-w-4xl mx-auto opacity-90">🎯 Digital tech services + homegrown products that solve real-world problems.</p>
-                <div class="flex flex-col sm:flex-row justify-center gap-6">
-                    <a href="#services" class="inline-block bg-blisstech-accent text-white px-10 py-5 rounded-xl text-xl font-semibold transform shadow-xl focus:outline-none focus:ring-4 focus:ring-emerald-300 btn-accent">Explore Services</a>
-                    <a href="#our-products" class="inline-block bg-blisstech-accent text-white px-10 py-5 rounded-xl text-xl font-semibold transform shadow-xl focus:outline-none focus:ring-4 focus:ring-emerald-300 btn-accent">See Our Products</a>
-                </div>
-            </div>
-        </section>
-
-        <section id="our-vision" class="py-20 bg-white rounded-2xl shadow-xl mb-20 mx-4 lg:mx-auto max-w-7xl section-hover-effect reveal-element">
-            <div class="container mx-auto px-6 text-center max-w-4xl">
-                <h2 class="text-4xl lg:text-5xl font-semibold mb-6 font-poppins leading-tight heading-shadow">Our Vision</h2>
-                <p class="text-lg lg:text-xl text-blisstech-slate mb-8">We're a small but sharp team focused on high-impact digital products and reliable tech support for growing teams. From platform hosting to AI-assisted UI design, we back founders, sellers, and early adopters.</p>
-                <p class="text-lg lg:text-xl text-blisstech-slate mb-0">💡 We're building solutions that simplify everyday experiences—both online and offline. <strong class="font-semibold text-blisstech-primary">BlissMeeting</strong> is our fallback-first communication platform, built to keep conversations flowing effortlessly. Whether you're on mobile or web, you can switch instantly without missing a beat. At the same time, we're rolling out a car cleaning app, <strong class="font-semibold text-blisstech-primary">Servoji</strong> designed with your convenience in mind. Available right within your residential community, it offers trusted, on-demand car care at your doorstep—so you can enjoy a spotless vehicle without disrupting your day.</p>
-                <p class="text-sm mt-8 italic text-gray-600 max-w-2xl mx-auto">
-                    "Our mission began with a simple idea: that powerful technology should be within reach of every innovator. So we set out to strip away the complexity and deliver solutions that spark progress."
-                </p>
-            </div>
-        </section>
-
-        <section id="our-products" class="py-20 bg-white rounded-2xl shadow-xl mb-20 mx-4 lg:mx-auto max-w-7xl reveal-element">
-            <div class="container mx-auto px-6 text-center">
-                <h2 class="text-4xl lg:text-5xl font-semibold mb-10 font-poppins heading-shadow">🚀 Our Flagship Products</h2>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-12 text-left">
-                    <div class="bg-[#F8FAFC] p-8 rounded-2xl shadow-md section-hover-effect flex flex-col justify-between">
-                        <div>
-                            <h3 class="text-3xl font-semibold text-blisstech-primary mb-4">BlissMeeting</h3>
-                            <p class="text-lg text-blisstech-slate mb-6">
-                                A fallback-first video platform that seamlessly switches between devices during connection drops. Ideal for hybrid teams, freelancers, and low-bandwidth zones.
-                            </p>
-                            </div>
-                        <div class="flex flex-col sm:flex-row justify-center gap-4 mt-auto">
-                             <a href="https://blissmeeting.com" target="_blank" class="inline-block bg-blisstech-accent text-white px-10 py-4 rounded-xl text-xl font-semibold hover:bg-emerald-600 transition duration-300 transform hover:scale-105 shadow-lg">Visit BlissMeeting.com</a>
-                        </div>
-                    </div>
-                    <div class="bg-[#F8FAFC] p-8 rounded-2xl shadow-md section-hover-effect flex flex-col justify-between">
-                        <div>
-                            <h3 class="text-3xl font-semibold text-blisstech-accent mb-4">Servoji</h3>
-                            <p class="text-lg text-blisstech-slate mb-6">
-                                Servoji is a smart protocol system starting with car cleaning, enabling service partners to follow structured, time-bound processes and ensure consistent quality.
-                            </p>
-                            </div>
-						 <div class="flex flex-col sm:flex-row justify-center gap-4 mt-auto">
-                   
-                        <a href="https://servoji.com" target="_blank" class="inline-block bg-blisstech-accent text-white px-10 py-4 rounded-xl text-xl font-semibold hover:bg-emerald-600 transition duration-300 transform hover:scale-105 shadow-lg">Visit Servoji.com</a></div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-
-        <section id="services" class="py-20 bg-blisstech-background rounded-2xl shadow-xl mb-20 mx-4 lg:mx-auto max-w-7xl reveal-element">
-            <div class="container mx-auto px-6 text-center">
-                <h2 class="text-4xl lg:text-5xl font-semibold mb-16 font-poppins heading-shadow">Our High-Value Digital Services</h2>
-
-                <div class="mb-16 bg-white p-8 rounded-2xl shadow-lg border border-blisstech-primary/20 reveal-element">
-                    <h3 class="text-3xl font-semibold mb-8 font-poppins text-blisstech-primary heading-shadow">Foundation & Infrastructure</h3>
-                    <div class="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-1 gap-10 fade-in-up-stagger max-w-3xl mx-auto">
-                        <div class="p-8 rounded-2xl transform transition-transform duration-300 hover:scale-[1.02] hover:shadow-2xl">
-                            <svg class="w-16 h-16 mb-6 text-blisstech-primary mx-auto" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/>
-                            </svg>
-                            <h3 class="text-2xl font-semibold mb-3 font-poppins text-blisstech-slate">Platform Hosting & Support</h3>
-                            <ul class="text-left text-sm text-blisstech-slate space-y-1 mt-4 list-disc pl-5">
-                                <li>Managed Server Infrastructure</li>
-                                <li>SSL & Custom Domain Setup</li>
-                                <li>24/7 Uptime Monitoring & Maintenance</li>
-                                <li>Security Patches & Updates</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="mb-16 bg-white p-8 rounded-2xl shadow-lg border border-blisstech-accent/20 reveal-element">
-                    <h3 class="text-3xl font-semibold mb-8 font-poppins text-blisstech-accent heading-shadow">Growth & Optimization</h3>
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-10 fade-in-up-stagger max-w-5xl mx-auto">
-                        <div class="p-8 rounded-2xl transform transition-transform duration-300 hover:scale-[1.02] hover:shadow-2xl">
-                            <svg class="w-16 h-16 mb-6 text-blisstech-accent mx-auto" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
-                            </svg>
-                            <h3 class="text-2xl font-semibold mb-3 font-poppins text-blisstech-slate">UI/UX with AI</h3>
-                            <ul class="text-left text-sm text-blisstech-slate space-y-1 mt-4 list-disc pl-5">
-                                <li>AI-Assisted Wireframe Analysis</li>
-                                <li>Conversion-Optimized Copywriting</li>
-                                <li>Responsive Design Adaptation</li>
-                                <li>User Flow & Usability Audits</li>
-                            </ul>
-                        </div>
-                        <div class="p-8 rounded-2xl transform transition-transform duration-300 hover:scale-[1.02] hover:shadow-2xl">
-                            <svg class="w-16 h-16 mb-6 text-blisstech-primary mx-auto" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M6 2L3 6v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6l-3-4H6z" />
-                                <line x1="3" y1="6" x2="21" y2="6" />
-                                <path d="M16 10a4 4 0 0 1-8 0" />
-                            </svg>
-                            <h3 class="text-2xl font-semibold mb-3 font-poppins text-blisstech-slate">Ecommerce Tech Help</h3>
-                            <ul class="text-left text-sm text-blisstech-slate space-y-1 mt-4 list-disc pl-5">
-                                <li>Shopify & WooCommerce Customization</li>
-                                <li>Seamless Checkout Flow Optimization</li>
-                                <li>Payment Gateway Integrations</li>
-                                <li>Performance & Speed Boosts</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="bg-white p-8 rounded-2xl shadow-lg border border-blisstech-primary/20 reveal-element">
-                    <h3 class="text-3xl font-semibold mb-8 font-poppins text-blisstech-primary heading-shadow">Maintenance & Evolution</h3>
-                    <div class="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-1 gap-10 fade-in-up-stagger max-w-3xl mx-auto">
-                        <div class="p-8 rounded-2xl transform transition-transform duration-300 hover:scale-[1.02] hover:shadow-2xl">
-                            <svg class="w-16 h-16 mb-6 text-blisstech-accent mx-auto" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" />
-                                <polyline points="14 2 14 8 20 8" />
-                                <line x1="16" y1="13" x2="8" y2="13" />
-                                <line x1="16" y1="17" x2="8" y2="17" />
-                            </svg>
-                            <h3 class="text-2xl font-semibold mb-3 font-poppins text-blisstech-slate">Deployments & Fixes</h3>
-                            <ul class="text-center text-sm text-blisstech-slate space-y-1 mt-4 list-disc list-inside">
-                                <li>Front-end (JS, HTML, CSS) Debugging</li>
-                                <li>Application Patching & Upgrades</li>
-                                <li>CI/CD Pipeline Setup (FTP, Firebase, Netlify)</li>
-                                <li>Cross-Browser Compatibility Checks</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-        </section>
-
-        <section id="razorpay-services" class="py-20 bg-white rounded-2xl shadow-xl mb-20 mx-4 lg:mx-auto max-w-7xl reveal-element">
-            <div class="container mx-auto px-6 text-center">
-                <h2 class="text-4xl lg:text-5xl font-semibold mb-10 font-poppins heading-shadow">💳 Payment & Onboarding Support</h2>
-                <div class="bg-[#F8FAFC] p-10 rounded-2xl shadow-md section-hover-effect max-w-4xl mx-auto text-left">
-                    <h3 class="text-3xl font-semibold text-blisstech-primary mb-4">Official Razorpay Partner</h3>
-                    <p class="text-lg text-blisstech-slate mb-6">
-                        As an authorized Razorpay partner, we simplify your payment integration and onboarding process. Setup is swift and seamless.
-                    </p>
-                    <a href="https://rzp.io/i/ULH5wkym" target="_blank" class="inline-block bg-blisstech-accent text-white px-10 py-4 rounded-xl text-xl font-semibold shadow-lg hover:bg-emerald-600 transition duration-300">
-                        Get Payment Support
-                    </a>
-                </div>
-            </div>
-        </section>
-
-        <section id="meet-our-team" class="py-20 bg-blisstech-background rounded-2xl shadow-xl mb-20 mx-4 lg:mx-auto max-w-7xl reveal-element">
-            <div class="container mx-auto px-6 text-center">
-                <h2 class="text-4xl lg:text-5xl font-semibold mb-6 font-poppins heading-shadow">👥 Meet Our Core Team</h2>
-                <p class="text-lg text-blisstech-slate mb-10 max-w-3xl mx-auto">
-                    We’re a hands-on crew driven by impact. Designers, engineers, product thinkers — united by one mission: smart tech for real-world change.
-                </p>
-                <div class="grid md:grid-cols-2 gap-10 justify-center items-start">
-                    <div class="bg-white rounded-xl p-6 shadow-md section-hover-effect">
-                        <img src="https://placehold.co/100x100/E5E7EB/4F46E5?text=Shalini" alt="Shalini Saxena" class="rounded-full mx-auto mb-4 w-24 h-24 object-cover">
-                        <h3 class="text-xl font-semibold text-blisstech-slate">Shalini Saxena</h3>
-                        <p class="text-sm text-gray-500 mb-3">Co-founder & Lead Designer</p>
-                        <p class="text-gray-600 text-sm">Passionate about crafting intuitive user experiences that connect people with technology seamlessly.</p>
-                    </div>
-                    <div class="bg-white rounded-xl p-6 shadow-md section-hover-effect">
-                        <img src="https://placehold.co/100x100/E5E7EB/10B981?text=Suyagya" alt="Suyagya Bansal" class="rounded-full mx-auto mb-4 w-24 h-24 object-cover">
-                        <h3 class="text-xl font-semibold text-blisstech-slate">Suyagya Bansal</h3>
-                        <p class="text-sm text-gray-500 mb-3">Co-founder & Tech Lead</p>
-                        <p class="text-gray-600 text-sm">Specializing in robust backend systems and scalable architecture that powers innovative digital solutions.</p>
-                    </div>
-                    <div class="md:col-span-2 bg-white rounded-xl p-6 shadow-md section-hover-effect">
-                        <h3 class="text-xl font-semibold text-blisstech-slate">Our Expanding Network</h3>
-                        <p class="text-sm text-gray-500 mb-3">Specialists & Collaborators</p>
-                        <p class="text-gray-600 text-sm">We engage with a dynamic network of skilled experts and passionate contributors who bring their unique talents to our projects when and where they’re needed most. Whether it's developers, designers, strategists, or subject-matter specialists, we collaborate with individuals who share our values and commitment to quality. This flexible, people-first approach allows us to stay agile, scale effectively, and deliver thoughtful, high-impact solutions—every time.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section id="testimonials" class="py-20 bg-white rounded-2xl shadow-xl mb-20 mx-4 lg:mx-auto max-w-7xl reveal-element">
-            <div class="container mx-auto px-6 text-center">
-                <h2 class="text-4xl lg:text-5xl font-semibold mb-12 font-poppins heading-shadow">Trusted by Visionaries</h2>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-10 mb-12">
-                    <div class="testimonial-card reveal-element">
-                        <p class="testimonial-quote">"Blisstech Solutions transformed our outdated platform into a lean, efficient powerhouse. Their dedication to practical, high-value tech is unmatched!"</p>
-                        <p class="testimonial-author">— Dr. Anand Kumar</p>
-                        <p class="testimonial-title">Founder, HealthTech Innovations</p>
-                    </div>
-                    <div class="testimonial-card reveal-element">
-                        <p class="testimonial-quote">"Their UI/UX insights, powered by AI, were a game-changer for our app's user engagement. Truly ahead of the curve."</p>
-                        <p class="testimonial-author">— Ms. Priya Sharma</p>
-                        <p class="testimonial-title">Creative Director, Digital Art Collective</p>
-                    </div>
-                </div>
-                </div>
-        </section>
-
-        <section id="clients-investors" class="py-20 bg-blisstech-primary text-white rounded-2xl shadow-xl mb-20 mx-4 lg:mx-auto max-w-7xl reveal-element">
-            <div class="container mx-auto px-6 text-center">
-                <h2 class="text-4xl lg:text-5xl font-semibold mb-6 font-poppins heading-shadow text-white flex items-center justify-center gap-3"> 
-                    <img src="puzzle.png" alt="Partner Icon" class="w-10 h-10 object-contain"/>
-                    Partner With Us: Innovate. Grow. Lead.</h2>
-                <p class="text-lg lg:text-xl mb-10 max-w-4xl mx-auto opacity-90">At Blisstech Solutions, we don't just build, we redefine possibilities. We seek visionary partners eager to tackle complex challenges, push technological boundaries, and achieve unprecedented growth in the digital landscape. Let's engineer the future, together. We offer a compelling investment opportunity, blending lean operational efficiency with a bold vision for scalable digital products. Our roadmap is clear, our team is agile, and our commitment to high-value creation is unwavering. Join us in shaping the next wave of digital innovation.</p>
-
-                <div class="flex flex-col md:flex-row justify-center gap-8">
-                    <a href="#contact" class="inline-block bg-blisstech-accent text-white px-10 py-5 rounded-xl text-xl font-semibold shadow-xl focus:outline-none focus:ring-4 focus:ring-emerald-300 btn-accent">Talk to Our Team</a>
-                    <a href="#investor" class="inline-block bg-blisstech-accent text-white px-10 py-5 rounded-xl text-xl font-semibold shadow-xl focus:outline-none focus:ring-4 focus:ring-emerald-300 btn-accent">Connect with Investors Relations</a>
-                </div>
-            </div>
-        </section>
-
-        <section id="investor" class="py-20 bg-white rounded-2xl shadow-xl mb-20 mx-4 lg:mx-auto max-w-7xl reveal-element">
-            <div class="container mx-auto px-6 text-center">
-                <h2 class="text-4xl lg:text-5xl font-semibold mb-6 font-poppins heading-shadow flex items-center justify-center gap-3">
-                    <img src="up.png" alt="Partner Icon" class="w-10 h-10 object-contain"/>
-                    Investor Corner</h2>
-                <p class="text-lg text-blisstech-slate mb-10 max-w-3xl mx-auto">
-                    We’ve built the product, team, and tech. Now we’re inviting visionary partners to join the next phase.
-                </p>
-
-                <p class="text-xl mt-10 font-semibold text-blisstech-accent">Funding Open: 1st & Last Round – Strategic Partners Only</p>
-                <p class="text-lg mt-2 text-blisstech-slate">
-                    Email us: <a href="mailto:investor-relations@blisstechsolutions.in" class="text-blisstech-primary hover:underline font-medium">investor-relations@blisstechsolutions.in</a>
-                </p>
-            </div>
-        </section>
-
-        <section id="contact" class="py-20 bg-white rounded-2xl shadow-xl mb-20 mx-4 lg:mx-auto max-w-7xl section-hover-effect reveal-element">
-            <div class="container mx-auto px-6 text-center">
-                <h2 class="text-4xl lg:text-5xl font-semibold mb-6 font-poppins heading-shadow">Get in Touch</h2>
-                <p class="text-lg lg:text-xl text-blisstech-slate mb-16 max-w-3xl mx-auto">Have a project in mind or a question for us? Reach out and let's start the conversation.</p>
-
-                <div class="max-w-2xl mx-auto">
-                    <form id="contactForm" class="grid grid-cols-1 gap-8">
-                        <input type="hidden" name="formType" value="contact">
-                        <div>
-                            <label for="name" class="block text-left text-lg font-medium text-blisstech-slate mb-3">Name</label>
-                            <input type="text" id="name" name="name" class="w-full px-5 py-4 rounded-xl border-2 border-gray-200 transition duration-200" placeholder="Your Name">
-                        </div>
-                        <div>
-                            <label for="email" class="block text-left text-lg font-medium text-blisstech-slate mb-3">Email</label>
-                            <input type="email" id="email" name="email" class="w-full px-5 py-4 rounded-xl border-2 border-gray-200 transition duration-200" placeholder="your.email@example.com">
-                        </div>
-                       
-                <div>
-                    <label for="phone" class="block text-left text-lg font-medium text-blisstech-slate mb-3">Mobile Number</label>
-                    <div class="flex">
-                        <select class="rounded-l-xl border-2 border-gray-200 bg-white px-4 py-3 text-gray-700" name="country-code">
-                            <option value="+91">+91</option> <option value="+1">+1</option> <option value="+44">+44</option> <option value="+61">+61</option> <option value="+81">+81</option> <option value="+49">+49</option> <option value="+33">+33</option> <option value="+39">+39</option> <option value="+34">+34</option> <option value="+86">+86</option> <option value="+55">+55</option> <option value="+7">+7</option> </select>
-                        <input type="tel" id="phone" name="phone" class="w-full rounded-r-xl border-2 border-gray-200 px-5 py-3" placeholder="Mobile Number" />
-                    </div>
-                </div>
-
-                <div>
-                    <label for="country" class="block text-left text-lg font-medium text-blisstech-slate mb-3">Country</label>
-                    <select id="country" name="country" class="w-full px-5 py-4 rounded-xl border-2 border-gray-200 transition duration-200">
-                        <option value="">Select a country</option>
-                        <option value="India">India</option>
-                        <option value="United States">United States</option>
-                        <option value="Other">Other</option>
-                    </select>
-                </div>
-                <div id="other-country-container" style="display:none;">
-                    <label for="other-country" class="block text-left text-lg font-medium text-blisstech-slate mb-3">Please specify your country</label>
-                    <input type="text" id="other-country" name="other-country" class="w-full px-5 py-4 rounded-xl border-2 border-gray-200" placeholder="e.g., Canada">
-                </div>
-
-                        <div>
-                            <label for="message" class="block text-left text-lg font-medium text-blisstech-slate mb-3">Message</label>
-                            <textarea id="message" name="message" rows="7" class="w-full px-5 py-4 rounded-xl border-2 border-gray-200 transition duration-200" placeholder="Tell us about your project or question..."></textarea>
-                        </div>
-                       
-                        <div class="flex items-center gap-3 text-left">
-                            <input type="checkbox" id="terms" name="terms" class="h-5 w-5 text-blisstech-primary rounded border-gray-300">
-                            <label for="terms" class="text-sm text-blisstech-slate">I agree to the <a href="#" class="text-blisstech-primary hover:underline">Terms of Service</a> and <a href="#" class="text-blisstech-primary hover:underline">Privacy Policy</a></label>
-                        </div>
-
-                        <button type="submit" class="bg-blisstech-primary text-white px-10 py-5 rounded-xl text-xl font-semibold shadow-lg focus:outline-none focus:ring-4 focus:ring-indigo-300 btn-primary">Send Message</button>
-                    </form>
-
-                    <p class="mt-16 text-lg text-blisstech-slate">General Inquiries: <a href="mailto:support@blisstechsolutions.in" class="text-blisstech-primary hover:underline font-medium">support@blisstechsolutions.in</a></p>
-                </div>
-            </div>
-        </section>
-    </main>
-
-    <footer class="bg-blisstech-slate text-white py-24 text-center rounded-t-3xl shadow-lg">
-        <div class="container mx-auto px-12">
-            <p>&copy; 2025 Blisstech Solutions Pvt Ltd.</p>
-            <p class="text mt-4">support@blisstechsolutions.in | CIN No: Uxxxxxxx</p>
-            <div class="mt-10 text flex justify-center space-x-6">
-                            <a href="#" class="text-white/80 hover:text-white transition duration-200">Privacy Policy</a>
-                            <a href="#" class="text-white/80 hover:text-white transition duration-200">Terms of Service</a>
-                            <a href="#" class="text-white/80 hover:text-white transition duration-200">LinkedIn</a>
-                            <a href="#" class="text-white/80 hover:text-white transition duration-200">GitHub</a>
-                        </div>
-                        <p class="text-x1 mt-6 text-white/60">
-                            Open to strategic investment discussions — write to <a href="mailto:investor-relations@blisstechsolutions.in" class="text-white/80 hover:underline">investor-relations@blisstechsolutions.in</a>
-                        </p>
-                        
-                        <div class="mt-16 max-w-lg mx-auto text-center reveal-element">
-                            <h3 class="text-3xl font-semibold mb-6 font-poppins heading-shadow text-white">Subscribe to Our Newsletter</h3>
-                            <p class="text-lg text-white/80 mb-6">Stay up-to-date with our latest product launches, tech insights, and exclusive updates.</p>
-                            <form id="newsletterForm" class="flex flex-col sm:flex-row gap-4 justify-center">
-                                <input type="hidden" name="formType" value="subscribe">
-                                <input type="email" name="email" placeholder="Enter your email" class="w-full sm:w-80 px-6 py-4 rounded-xl bg-white/10 border-2 border-white/20 text-white placeholder-white/50 focus:outline-none focus:border-white/50 transition duration-200" required>
-                                <button type="submit" class="bg-blisstech-accent text-blisstech-slate font-semibold px-8 py-4 rounded-xl text-lg shadow-lg hover:bg-yellow-400 transition duration-300">Subscribe</button>
-                            </form>
-                            <div id="toast" class="fixed bottom-5 left-1/2 -translate-x-1/2 px-6 py-3 rounded-lg text-white font-semibold shadow-xl transition-all duration-300" style="display:none; z-index: 9999;"></div>
-                        </div>
-
-            </footer>
-
-    <div id="qa-side-panel">
-        <button id="qa-side-panel-toggle-btn">
-            <svg class="icon w-8 h-8 chat-icon" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 14h8V6H6v8z"/>
-            </svg>
-            <svg class="icon w-8 h-8 close-icon hidden" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
-            </svg>
-        </button>
-        <div id="qa-panel-content">
-            <div class="qa-container">
-                <div id="qa-message-history" class="qa-message-history">
-                    </div> 
-                <div id="qa-current-question-area" class="qa-current-question-container">
-                    </div> 
-                <div class="qa-input-area static-input-bar" id="qa-static-bar">
-                        <input type="text" placeholder="Ask a question..." class="flex-grow px-4 py-3 border border-gray-300 rounded-l-xl focus:outline-none focus:ring-2 focus:ring-blisstech-primary" />
-                        <button class="bg-blisstech-primary text-white px-6 py-3 rounded-r-xl font-semibold hover:bg-indigo-700 transition duration-200">Send</button>
-                </div>
-            </div>
-        </div>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Blisstech solutions website</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="style.css">
+  </head>
+
+  <body>
+   
+  <div class="hero">
+
+  <!-- ===== NAVBAR ===== -->
+  <nav class="navbar">
+    <div class="logo">
+     <img src="images/logo.png" alt="">
     </div>
 
-
-    <script>
-        // Mobile Menu Toggle
-        document.getElementById('mobile-menu-button').addEventListener('click', function() {
-            document.getElementById('mobile-menu').classList.toggle('hidden');
-        });
-
-        // Scroll Reveal Animation
-        document.addEventListener("DOMContentLoaded", function() {
-            const revealElements = document.querySelectorAll(".reveal-element");
-
-            const observerOptions = {
-                root: null, // viewport
-                rootMargin: "0px",
-                threshold: 0.1 // 10% of element visible
-            };
-
-            const observer = new IntersectionObserver((entries, observer) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add("is-visible");
-                        observer.unobserve(entry.target); // Stop observing once revealed
-                    }
-                });
-            }, observerOptions);
-
-            revealElements.forEach(element => {
-                observer.observe(element);
-            });
-
-            // For staggered animations (like service cards)
-            const staggeredElementsContainers = document.querySelectorAll(".fade-in-up-stagger");
-            staggeredElementsContainers.forEach(container => {
-                const childElements = container.children;
-                const staggeredObserver = new IntersectionObserver((entries, observer) => {
-                    entries.forEach(entry => {
-                        if (entry.isIntersecting) {
-                            Array.from(childElements).forEach((child, index) => {
-                                child.classList.add("is-visible"); // Base animation
-                            });
-                            observer.unobserve(entry.target); // Stop observing once revealed
-                        }
-                    });
-                }, observerOptions);
-                staggeredObserver.observe(container);
-            });
-        });
-
-        // Three.js Hero Banner Animation
-        window.onload = function() {
-            const canvas = document.getElementById('heroCanvas');
-            if (!canvas) return;
-
-            const scene = new THREE.Scene();
-            const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
-            const renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, alpha: true });
-
-            function resizeRenderer() {
-                const parent = canvas.parentElement;
-                renderer.setSize(parent.clientWidth, parent.clientHeight);
-                camera.aspect = parent.clientWidth / parent.clientHeight;
-                camera.updateProjectionMatrix();
-            }
-            resizeRenderer();
-            window.addEventListener('resize', resizeRenderer);
-
-            camera.position.set(0, 0, 90); // Adjusted camera position to keep elements further back
-
-            const stages = [];
-            const material = new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.01, wireframe: true });
-            const primaryColor = new THREE.Color(0x4F46E5);
-            const accentColor = new THREE.Color(0x10B981);
-            const redBrandColor = new THREE.Color(0xEF4444);
-            const orangeBrandColor = new THREE.Color(0xF97316);
-            const yellowBrandColor = new THREE.Color(0xFACC15);
-
-            const cube1 = new THREE.Mesh(new THREE.BoxGeometry(10, 10, 10), material.clone());
-            cube1.position.set(-45, 15, -20);
-            stages.push(cube1);
-            scene.add(cube1);
-
-            const points2 = [new THREE.Vector3(-35, 5, 10), new THREE.Vector3(-10, 25, 10), new THREE.Vector3(20, 5, 10)];
-            const line2 = new THREE.Line(new THREE.BufferGeometry().setFromPoints(points2), new THREE.LineBasicMaterial({ color: primaryColor, transparent: true, opacity: 0.05 }));
-            line2.position.set(-15, -10, 0);
-            stages.push(line2);
-            scene.add(line2);
-
-            const ico3 = new THREE.Mesh(new THREE.IcosahedronGeometry(12, 0), material.clone());
-            ico3.position.set(40, 10, -15);
-            stages.push(ico3);
-            scene.add(ico3);
-
-            const particlesGeometry = new THREE.BufferGeometry();
-            const particlesCount = 500;
-            const posArray = new Float32Array(particlesCount * 3);
-            const colorsArray = new Float32Array(particlesCount * 3);
-            const particleColors = [accentColor, redBrandColor, yellowBrandColor, primaryColor];
-
-            for (let i = 0; i < particlesCount * 3; i += 3) {
-                posArray[i] = (Math.random() - 0.5) * 120;
-                posArray[i + 1] = (Math.random() - 0.5) * 120;
-                posArray[i + 2] = (Math.random() - 0.5) * 120;
-
-                const color = particleColors[Math.floor(Math.random() * particleColors.length)];
-                colorsArray[i] = color.r;
-                colorsArray[i + 1] = color.g;
-                colorsArray[i + 2] = color.b;
-            }
-            particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
-            particlesGeometry.setAttribute('color', new THREE.BufferAttribute(colorsArray, 3));
-
-            const particlesMaterial = new THREE.PointsMaterial({
-                size: 1.0,
-                transparent: true,
-                opacity: 0.2,
-                blending: THREE.AdditiveBlending,
-                vertexColors: true
-            });
-            const particles = new THREE.Points(particlesGeometry, particlesMaterial);
-            stages.push(particles);
-            scene.add(particles);
-
-            const blisstechSphere = new THREE.Mesh(
-                new THREE.SphereGeometry(15, 32, 32),
-                new THREE.MeshStandardMaterial({
-                    color: primaryColor,
-                    transparent: true,
-                    opacity: 0.02,
-                    emissive: primaryColor,
-                    emissiveIntensity: 0.3,
-                    roughness: 0.5
-                })
-            );
-            blisstechSphere.position.set(0, 0, 0);
-            stages.push(blisstechSphere);
-            scene.add(blisstechSphere);
-
-            const ambientLight = new THREE.AmbientLight(0xffffff, 0.4);
-            scene.add(ambientLight);
-            const pointLight = new THREE.PointLight(primaryColor, 1.0, 150);
-            pointLight.position.set(20, 20, 20);
-            scene.add(pointLight);
-            const pointLight2 = new THREE.PointLight(accentColor, 1.0, 150);
-            pointLight2.position.set(-20, -20, 20);
-            scene.add(pointLight2);
-            const dynamicLight = new THREE.PointLight(redBrandColor, 0.6, 100);
-            dynamicLight.position.set(0, 0, 30);
-            scene.add(dynamicLight);
-
-            let frame = 0;
-           // const animationSpeedMultiplier = 1.3; // Increased to 1.3x
-const animationSpeedMultiplier = 1.8; // Increased to 1.8x
-
-            function animate() {
-                requestAnimationFrame(animate);
-
-                cube1.rotation.x += 0.008 * animationSpeedMultiplier;
-                cube1.rotation.y += 0.008 * animationSpeedMultiplier;
-                line2.rotation.z += 0.005 * animationSpeedMultiplier;
-                ico3.rotation.x += 0.004 * animationSpeedMultiplier;
-                ico3.rotation.y -= 0.004 * animationSpeedMultiplier;
-                particles.rotation.y += 0.002 * animationSpeedMultiplier;
-                blisstechSphere.rotation.y += 0.002 * animationSpeedMultiplier;
-
-                const maxFrame = 1000;
-                const stageDuration = maxFrame / stages.length;
-
-                stages.forEach((obj, index) => {
-                    let currentStageOpacity = 0;
-                    if (frame >= index * stageDuration && frame < (index + 1) * stageDuration) {
-                        currentStageOpacity = Math.sin(((frame - index * stageDuration) / stageDuration) * Math.PI);
-                        obj.material.opacity = (obj.isPoints ? 0.05 : 0.01) + currentStageOpacity * (obj.isPoints ? 0.3 : 0.05);
-                        if (obj.isPoints) { obj.material.size = 1.0 + currentStageOpacity * 0.5; }
-                    } else {
-                        obj.material.opacity = Math.max(obj.isPoints ? 0.02 : 0.005, obj.material.opacity * 0.98);
-                        if (obj.isPoints) { obj.material.size = Math.max(0.2, obj.material.size * 0.98); }
-                    }
-                    obj.material.needsUpdate = true;
-                });
-
-                const happinessFactor = Math.sin(frame * 0.01 * animationSpeedMultiplier) * 0.05 + 1;
-                blisstechSphere.scale.set(happinessFactor, happinessFactor, happinessFactor);
-                blisstechSphere.material.emissiveIntensity = 0.3 + Math.sin(frame * 0.02 * animationSpeedMultiplier) * 0.2;
-
-                const lightColorInterpolation = (Math.sin(frame * 0.005 * animationSpeedMultiplier) + 1) / 2;
-                if (lightColorInterpolation < 0.33) {
-                    dynamicLight.color.copy(redBrandColor);
-                } else if (lightColorInterpolation < 0.66) {
-                    dynamicLight.color.copy(orangeBrandColor);
-                } else {
-                    dynamicLight.color.copy(yellowBrandColor);
-                }
-
-                renderer.render(scene, camera);
-                frame += animationSpeedMultiplier;
-                if (frame > maxFrame) {
-                    frame = 0;
-                    cube1.position.set(-45 + Math.random()*10, 15 + Math.random()*10, -20 + Math.random()*10);
-                    ico3.position.set(40 + Math.random()*10, 10 + Math.random()*10, -15 + Math.random()*10);
-                }
-            }
-            animate();
-
-            let isDragging = false;
-            let previousMousePosition = { x: 0, y: 0 };
-
-            canvas.addEventListener('mousedown', (e) => { isDragging = true; });
-            canvas.addEventListener('mouseup', () => { isDragging = false; });
-            canvas.addEventListener('mousemove', (e) => {
-                if (!isDragging) return;
-                const deltaX = e.clientX - previousMousePosition.x;
-                const deltaY = e.clientY - previousMousePosition.y;
-                scene.rotation.y += deltaX * 0.005;
-                scene.rotation.x += deltaY * 0.005;
-                previousMousePosition = { x: e.clientX, y: e.clientY };
-            });
-        };
-
-        // Simple Q&A Logic for Side Panel
-        document.addEventListener("DOMContentLoaded", function() {
-            const qaSidePanel = document.getElementById('qa-side-panel');
-            const qaToggleBtn = document.getElementById('qa-side-panel-toggle-btn');
-            const qaPanelContent = document.getElementById('qa-panel-content');
-            const qaHistory = document.getElementById('qa-message-history');
-            const qaCurrentQuestionArea = document.getElementById('qa-current-question-area');
-            const qaStaticBar = document.getElementById('qa-static-bar'); // Get the static bar
-
-            // --- Q&A Questions Definition ---
-            const qaQuestions = [
-                {
-                    id: "initialGreeting",
-                    text: "May I help you?",
-                    type: "text_input_yes_no",
-                    placeholder: "Type 'yes' or 'no'"
-                },
-                {
-                    id: "userName",
-                    text: "Great! Before we proceed, could you please tell me your name? This helps me offer a more personalized experience.",
-                    type: "text_input",
-                    placeholder: "e.g., John Doe"
-                },
-                {
-                    id: "contactPreference",
-                    text: "Thanks, [userName]! How would you prefer we get in touch for details? You can provide a phone number or an email, or both. Or, you can skip if you prefer we only use the details provided at the end of the chat.",
-                    type: "custom_contact_input", // Custom type for phone/email with skip
-                    placeholder: { phone: "Your phone number (optional)", email: "Your email (optional)" }
-                },
-                {
-                    id: "serviceType",
-                    text: "What type of service are you interested in today?",
-                    type: "buttons",
-                    options: [
-                        { display: "Platform & Hosting", value: "Hosting" },
-                        { display: "UI/UX & Design", value: "UI/UX" },
-                        { display: "Ecommerce & Web Help", value: "Ecommerce" },
-                        { display: "Deployment & Troubleshooting", value: "Deployment" },
-                        { display: "Other", value: "Other" }
-                    ]
-                },
-                {
-                    id: "projectNeeds",
-                    text: "Could you briefly describe your project needs related to [Previous Answer]?",
-                    type: "text_input",
-                    placeholder: "e.g., I need a secure server for my new SaaS app..."
-                },
-                {
-                    id: "finalContactConfirm",
-                    text: "Thank you for providing your information! Shall I submit your inquiry? We'll be in touch shortly.",
-                    type: "buttons",
-                    options: [
-                        { display: "Submit Inquiry", value: "submit" },
-                        { display: "Cancel Chat", value: "cancel" }
-                    ]
-                }
-            ];
-
-            let currentQuestionIndex = parseInt(localStorage.getItem('qaCurrentIndex') || '0');
-            let capturedAnswers = JSON.parse(localStorage.getItem('qaData') || '{}');
-
-            function appendMessage(text, sender) {
-                const messageDiv = document.createElement('div');
-                messageDiv.classList.add('qa-message', sender);
-                messageDiv.innerHTML = `<span class="qa-message-bubble">${text}</span>`;
-                qaHistory.appendChild(messageDiv);
-                qaHistory.scrollTop = qaHistory.scrollHeight; // Scroll to bottom
-            }
-
-            function displayQuestion() {
-                qaCurrentQuestionArea.innerHTML = ''; // Clear previous content
-                qaStaticBar.style.display = 'none'; // Hide the static input bar
-
-                if (currentQuestionIndex < qaQuestions.length) {
-                    const q = qaQuestions[currentQuestionIndex];
-                    let questionText = q.text;
-
-                    // Replace placeholders in question text
-                    if (q.id === "contactPreference" && capturedAnswers.userName) {
-                        questionText = questionText.replace('[userName]', capturedAnswers.userName);
-                    } else if (q.id === "projectNeeds" && capturedAnswers.serviceType) {
-                        questionText = questionText.replace('[Previous Answer]', capturedAnswers.serviceType);
-                    }
-
-                    // Only append bot message if it's not the last message in history (prevents duplication)
-                    const lastBotMessageText = qaHistory.lastChild && qaHistory.lastChild.classList.contains('bot') ? qaHistory.lastChild.querySelector('.qa-message-bubble').textContent : '';
-                    if (lastBotMessageText.trim() !== questionText.trim()) { // Trim for comparison accuracy
-                        appendMessage(questionText, 'bot'); // Display the bot's question
-                    }
-
-
-                    if (q.type === "buttons") {
-                        const buttonsDiv = document.createElement('div');
-                        buttonsDiv.className = 'flex flex-col gap-2 mt-4';
-                        q.options.forEach(option => {
-                            const button = document.createElement('button');
-                            button.classList.add('qa-question-button');
-                            button.textContent = option.display;
-                            button.dataset.value = option.value;
-                            button.onclick = () => handleAnswer(q.id, option.value, option.display);
-                            buttonsDiv.appendChild(button);
-                        });
-                        qaCurrentQuestionArea.appendChild(buttonsDiv);
-                    } else if (q.type === "text_input" || q.type === "text_input_yes_no") {
-                        const inputDiv = document.createElement('div');
-                        inputDiv.className = 'qa-input-area';
-                        const inputField = document.createElement('input');
-                        inputField.type = (q.id === "contactEmail") ? "email" : "text"; // Although contactEmail is now part of custom_contact_input, keeping this for robustness
-                        inputField.id = `qa-input-${q.id}`;
-                        inputField.placeholder = q.placeholder;
-                        inputField.className = 'flex-grow px-4 py-2 border border-gray-300 rounded-l-xl focus:outline-none focus:ring-2 focus:ring-blisstech-primary';
-
-                        const sendButton = document.createElement('button');
-                        sendButton.textContent = "Send";
-                        sendButton.className = 'bg-blisstech-primary text-white px-6 py-2 rounded-r-xl font-semibold hover:bg-indigo-700 transition duration-200';
-                        sendButton.onclick = () => handleAnswer(q.id, inputField.value);
-
-                        inputDiv.appendChild(inputField); 
-                        inputDiv.appendChild(sendButton); 
-                        qaCurrentQuestionArea.appendChild(inputDiv);
-                        inputField.focus();
-                    } else if (q.type === "custom_contact_input") {
-                        const contactInputDiv = document.createElement('div');
-                        contactInputDiv.className = 'flex flex-col gap-3 mt-4';
-
-                        // Phone input
-                        const phoneInputContainer = document.createElement('div');
-                        phoneInputContainer.className = 'flex';
-                        const phoneCodeSelect = document.createElement('select');
-                        phoneCodeSelect.className = 'rounded-l-xl border-2 border-gray-200 bg-white px-4 py-2 text-gray-700';
-                        const countryCodes = ["+91", "+1", "+44", "+61", "+81", "+49", "+33", "+39", "+34", "+86", "+55", "+7"];
-                        countryCodes.forEach(code => {
-                            const option = document.createElement('option');
-                            option.value = code;
-                            option.textContent = code;
-                            phoneCodeSelect.appendChild(option);
-                        });
-                        const phoneInputField = document.createElement('input');
-                        phoneInputField.type = 'tel';
-                        phoneInputField.id = 'qa-input-phone';
-                        phoneInputField.placeholder = q.placeholder.phone;
-                        phoneInputField.className = 'w-full rounded-r-xl border-2 border-gray-200 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blisstech-primary';
-                        // Pre-fill if already captured
-                        if (capturedAnswers.contactPhone && capturedAnswers.contactPhone !== 'Not provided' && capturedAnswers.contactPhone.startsWith('+')) {
-                            phoneCodeSelect.value = capturedAnswers.contactPhone.split(' ')[0];
-                            phoneInputField.value = capturedAnswers.contactPhone.split(' ')[1] || '';
-                        }
-                        phoneInputContainer.appendChild(phoneCodeSelect);
-                        phoneInputContainer.appendChild(phoneInputField);
-                        contactInputDiv.appendChild(phoneInputContainer);
-
-                        // Email input
-                        const emailInputField = document.createElement('input');
-                        emailInputField.type = 'email';
-                        emailInputField.id = 'qa-input-email';
-                        emailInputField.placeholder = q.placeholder.email;
-                        emailInputField.className = 'w-full px-4 py-2 rounded-xl border-2 border-gray-200 focus:outline-none focus:ring-2 focus:ring-blisstech-primary';
-                        // Pre-fill if already captured
-                        if (capturedAnswers.contactEmail && capturedAnswers.contactEmail !== 'Not provided') {
-                            emailInputField.value = capturedAnswers.contactEmail;
-                        }
-                        contactInputDiv.appendChild(emailInputField);
-
-                        // Buttons for submitting or skipping
-                        const buttonsDiv = document.createElement('div');
-                        buttonsDiv.className = 'flex flex-col sm:flex-row gap-2 mt-4';
-
-                        const continueButton = document.createElement('button');
-                        continueButton.textContent = "Continue";
-                        continueButton.classList.add('qa-question-button', 'bg-blisstech-primary', 'hover:bg-indigo-700');
-                        continueButton.onclick = () => handleContactInput(phoneCodeSelect.value + ' ' + phoneInputField.value, emailInputField.value);
-                        buttonsDiv.appendChild(continueButton);
-
-                        const skipButton = document.createElement('button');
-                        skipButton.textContent = "Skip for now";
-                        skipButton.classList.add('qa-question-button', 'bg-gray-500', 'hover:bg-gray-600');
-                        skipButton.onclick = () => handleContactInput('', '', true); // Pass true for isSkipped
-                        buttonsDiv.appendChild(skipButton);
-
-                        qaCurrentQuestionArea.appendChild(contactInputDiv);
-                    }
-                } else {
-                    // This block handles the case when all questions are answered, and it proceeds to the final confirmation.
-                    // The 'finalContactConfirm' question is designed to be the last one, with buttons to submit or cancel.
-                    // If we reach here and it's not the final confirmation, it means the chat flow needs to conclude.
-                    // This ensures the bot's final confirmation message is always displayed correctly.
-                    const finalQuestion = qaQuestions.find(q => q.id === "finalContactConfirm");
-                    if (finalQuestion) {
-                        // Temporarily set currentQuestionIndex to point to finalContactConfirm
-                        currentQuestionIndex = qaQuestions.indexOf(finalQuestion);
-                        localStorage.setItem('qaCurrentIndex', currentQuestionIndex.toString());
-                        displayQuestion(); // Recurse to display the final confirmation
-                    } else {
-                         // Fallback if finalContactConfirm isn't found (shouldn't happen with current setup)
-                        appendMessage("Thank you for your responses. Your inquiry is being submitted.", 'bot');
-                        setTimeout(() => handleSubmit(), 1000);
-                    }
-                }
-            }
-
-            function handleAnswer(questionId, answerValue, displayValue = answerValue) {
-                appendMessage(displayValue, 'user'); // Show user's selected/typed answer
-
-                if (questionId === "initialGreeting") {
-                    const normalizedAnswer = answerValue.toLowerCase().trim();
-                    if (normalizedAnswer === 'yes' || normalizedAnswer === 'y') {
-                        capturedAnswers[questionId] = answerValue;
-                        currentQuestionIndex++; // Move to asking for name
-                        localStorage.setItem('qaData', JSON.stringify(capturedAnswers));
-                        localStorage.setItem('qaCurrentIndex', currentQuestionIndex.toString());
-                        setTimeout(() => displayQuestion(), 1000);
-                    } else {
-                        appendMessage("No problem! Feel free to ask if you change your mind.", 'bot');
-                        setTimeout(() => {
-                            qaSidePanel.classList.remove('expanded');
-                            resetChatSession();
-                        }, 2000);
-                    }
-                } else if (questionId === "finalContactConfirm") {
-                    if (answerValue === 'submit') {
-                        handleSubmit();
-                    } else if (answerValue === 'cancel') {
-                        appendMessage("No problem! The chat has been cancelled. Feel free to open it again anytime.", 'bot');
-                        setTimeout(() => {
-                            qaSidePanel.classList.remove('expanded');
-                            resetChatSession();
-                        }, 2000);
-                    }
-                }
-                else {
-                    capturedAnswers[questionId] = answerValue;
-                    localStorage.setItem('qaData', JSON.stringify(capturedAnswers));
-
-                    currentQuestionIndex++;
-                    localStorage.setItem('qaCurrentIndex', currentQuestionIndex.toString());
-
-                    setTimeout(() => {
-                        displayQuestion();
-                    }, 1000); // Small delay before next question
-                }
-            }
-
-            function handleContactInput(phoneNumber, email, isSkipped = false) {
-                const currentPhoneNumber = phoneNumber.trim();
-                const currentEmail = email.trim();
-
-                // If both are empty AND user did NOT explicitly click "Skip for now" (isSkipped is false)
-                if (currentPhoneNumber === '' && currentEmail === '' && !isSkipped) {
-                    appendMessage("Please provide either a phone number or an email to proceed, or use the 'Skip for now' button.", 'bot');
-                    return; // Stay on the same question
-                }
-                
-                // If user skipped or provided contact
-                capturedAnswers.contactPhone = currentPhoneNumber || 'Not provided';
-                capturedAnswers.contactEmail = currentEmail || 'Not provided';
-
-                if (isSkipped) {
-                     appendMessage("Contact details skipped for now.", 'user');
-                } else {
-                     appendMessage(`Phone: ${capturedAnswers.contactPhone}, Email: ${capturedAnswers.contactEmail}`, 'user');
-                }
-               
-                currentQuestionIndex++;
-                localStorage.setItem('qaData', JSON.stringify(capturedAnswers));
-                localStorage.setItem('qaCurrentIndex', currentQuestionIndex.toString());
-                setTimeout(() => displayQuestion(), 1000);
-            }
-
-
-            function handleSubmit() {
-                console.log("Captured Answers from Chatbot:", capturedAnswers);
-
-                const userName = capturedAnswers.userName || 'Chatbot User';
-                const serviceType = capturedAnswers.serviceType || 'Not specified';
-                const projectNeeds = capturedAnswers.answers?.projectNeeds || capturedAnswers.projectNeeds || 'Not specified'; // Adjusted to check both possibilities
-                const contactPhone = capturedAnswers.contactPhone || 'Not provided';
-                const contactEmail = capturedAnswers.contactEmail || 'Not provided';
-
-                // Build the message string from the captured answers with prefixes
-                const messageString = `
-                    Inquiry from Chatbot:
-                    Name: ${userName}
-                    Service Type: ${serviceType}
-                    Project Needs: ${projectNeeds}
-                    Contact Phone: ${contactPhone}
-                    Contact Email: ${contactEmail}
-                `.trim();
-
-                // Prepare data for the contact form's Google Apps Script
-                const dataToSend = new URLSearchParams({
-                    name: userName,
-                    email: contactEmail !== 'Not provided' ? contactEmail : 'chatbot_inquiry@blisstechsolutions.in', // Use a default email if none provided
-                    phone: contactPhone !== 'Not provided' ? contactPhone : '', // Leave empty if not provided
-                    country: 'Chatbot Inquiry', // You might want to ask for this in chat or use a default
-                    message: messageString,
-                    terms: 'Yes (via Chatbot)' // Assume terms are implicitly accepted via chatbot interaction
-                });
-                
-                const contactAppsScriptUrl = "https://script.google.com/macros/s/AKfycbzv-vuP4nx3avtiyT20h6ukvJj_hXVggn4TVW-6fq9uCY0OSYNfgE9iB7SyU_cN0SXMlw/exec"; 
-
-                // Ensure the "Submitting your inquiry..." message is appended only once before fetch
-                const lastHistoryMessage = qaHistory.lastChild ? qaHistory.lastChild.textContent.trim() : '';
-                if (!lastHistoryMessage.includes("Submitting your inquiry...")) {
-                    appendMessage("Submitting your inquiry...", 'bot');
-                }
-
-                fetch(contactAppsScriptUrl, {
-                    method: 'POST',
-                    body: dataToSend,
-                })
-                .then(response => {
-                    if (response.ok) {
-                        appendMessage("Your inquiry has been successfully submitted. We'll be in touch shortly!", 'bot');
-                    } else {
-                        throw new Error('Server responded with an error.');
-                    }
-                })
-                .catch(error => {
-                    console.error("Chatbot submission error:", error);
-                    appendMessage("An error occurred. Please try again later.", 'bot');
-                })
-                .finally(() => {
-                    setTimeout(() => {
-                        resetChatSession();
-                        qaSidePanel.classList.remove('expanded');
-                    }, 3000);
-                });
-            }
-
-            function resetChatSession() {
-                localStorage.removeItem('qaData');
-                localStorage.removeItem('qaCurrentIndex');
-                currentQuestionIndex = 0;
-                capturedAnswers = {};
-                qaHistory.innerHTML = '';
-                qaStaticBar.style.display = 'flex'; // Restore the static input bar
-            }
-
-            // --- Side Panel Toggle Logic ---
-            qaToggleBtn.addEventListener('click', function() {
-                qaSidePanel.classList.toggle('expanded');
-                if (qaSidePanel.classList.contains('expanded')) {
-                    qaToggleBtn.querySelector('.chat-icon').classList.toggle('hidden');
-                    qaToggleBtn.querySelector('.close-icon').classList.toggle('hidden');
-                    if (qaHistory.children.length === 0) {
-                        appendMessage("Hello! I'm your Blisstech Assistant. How can I help you today?", 'bot');
-                        setTimeout(() => {
-                             displayQuestion();
-                        }, 500);
-                    } else {
-                       qaHistory.scrollTop = qaHistory.scrollHeight;
-                       displayQuestion(); // Display current question if already open
-                    }
-                } else {
-                    qaToggleBtn.querySelector('.chat-icon').classList.toggle('hidden');
-                    qaToggleBtn.querySelector('.close-icon').classList.toggle('hidden');
-                }
-            });
-
-            const newsletterForm = document.getElementById('newsletterForm');
-            const toast = document.getElementById('toast');
-
-            if (newsletterForm) {
-                newsletterForm.addEventListener('submit', function(e) {
-                    e.preventDefault();
-                    const email = newsletterForm.email.value;
-                    
-                    showToast("Submitting...", "#007bff");
-
-                    fetch('https://script.google.com/macros/s/AKfycbyOp1aePNxSP-EMkNHqubIz7AIV5Y-W8TcyzEtIUDQgeayXnK61YJ0TzkvkbRo4diol/exec', {
-                        method: 'POST',
-                        body: new URLSearchParams({ email })
-                    })
-                    .then(response => response.text())
-                    .then(data => {
-                        showToast("Successfully Subscribed!", "#28a745");
-                        newsletterForm.reset();
-                    })
-                    .catch(error => {
-                        console.error("Newsletter error:", error);
-                        showToast(`Error: ${error.message}`, "#dc3545");
-                    });
-                });
-            }
-
-            const contactForm = document.getElementById("contactForm");
-
-            if (contactForm) {
-                const submitBtn = contactForm.querySelector("button[type='submit']");
-                
-                contactForm.addEventListener("submit", function (e) {
-                    e.preventDefault();
-
-                    const name = document.getElementById("name").value;
-                    const email = document.getElementById("email").value;
-                    const phone = document.getElementById("phone").value;
-                    let country = document.getElementById("country").value;
-                    const otherCountry = document.getElementById("other-country")?.value || "";
-                    const message = document.getElementById("message").value;
-                    const termsAccepted = document.getElementById("terms").checked;
-
-                    if (country === "Other" && otherCountry.trim() === "") {
-                        showToast("Please enter your country name.", "#dc3545");
-                        return;
-                    }
-
-                    if (country === "Other" && otherCountry.trim() !== "") {
-                        country = `Other - ${otherCountry.trim()}`;
-                    }
-
-                    if (!termsAccepted) {
-                        showToast("Please accept the terms to proceed.", "#dc3545");
-                        return;
-                    }
-
-                    submitBtn.disabled = true;
-                    const originalText = submitBtn.innerHTML;
-                    submitBtn.innerHTML = `<span class="spinner" style="margin-right: 8px; display:inline-block; width:16px; height:16px; border:2px solid #fff; border-radius:50%; border-top:2px solid transparent; animation: spin 1s linear infinite;"></span> Sending...`;
-
-                    showToast("Submitting your message...", "#007bff");
-
-                    fetch("https://script.google.com/macros/s/AKfycbzv-vuP4nx3avtiyT20h6ukvJj_hXVggn4TVW-6fq9uCY0OSYNfgE9iB7SyU_cN0SXMlw/exec", {
-                        method: "POST",
-                        body: new URLSearchParams({
-                            name,
-                            email,
-                            phone,
-                            country,
-                            message,
-                            terms: termsAccepted ? "Yes" : ""
-                        }),
-                    })
-                    .then(response => response.text())
-                    .then(data => {
-                        showToast("Message sent successfully!", "#28a745");
-                        contactForm.reset();
-                        const otherContainer = document.getElementById("other-country-container");
-                        if (otherContainer) otherContainer.style.display = "none";
-                    })
-                    .catch(error => {
-                        console.error("Contact form error:", error);
-                        showToast("Failed to send message: " + error.message, "#dc3545");
-                    })
-                    .finally(() => {
-                        submitBtn.disabled = false;
-                        submitBtn.innerHTML = originalText;
-                    });
-                });
-            }
-
-            function showToast(message, bgColor) {
-                if (toast) {
-                    toast.innerText = message;
-                    toast.style.backgroundColor = bgColor;
-                    toast.style.display = "block";
-                    setTimeout(() => {
-                        toast.style.display = "none";
-                    }, 3000);
-                }
-            }
-
-            const countrySelect = document.getElementById("country");
-            const otherContainer = document.getElementById("other-country-container");
-
-            if (countrySelect && otherContainer) {
-                countrySelect.addEventListener("change", function () {
-                    otherContainer.style.display = (countrySelect.value === "Other") ? "block" : "none";
-                });
-            }
-        });
-            
-    </script>
-	<style> @keyframes spin {
-                0% { transform: rotate(0deg); }
-                100% { transform: rotate(360deg); }
-			 }
-	</style>
+    <ul class="nav-links" id="menu">
+      <li><a href="#vision-section">Our Vision</a><img src="images/dot.png" alt=""></li>
+      <li><a href="#">Services</a><img src="images/dot.png" alt=""></li>
+      <li><a href="#">Testimonials</a><img src="images/dot.png" alt=""></li>
+      <li><a href="#">Investor Corner</a><img src="images/dot.png" alt=""></li>
+      <li><a href="#">Career</a><img src="images/dot.png" alt=""></li>
+      <li><a href="#">Feeds</a></li>
+      <li><a class="contact-btn" href="#">Contact Us</a></li>
+    </ul>
+
+    <div class="menu-toggle" onclick="toggleMenu()">☰</div>
+  </nav>
+
+  <!-- ===== HERO CONTENT ===== -->
+  <div class="hero-content">
+    <div class="hero-text">
+      <h1>Build Smart. Support Lean. <br> Scale Fast.</h1>
+      <p>
+        Digital tech services + homegrown products that solve real-world problems
+      </p>
+
+      <div class="hero-buttons">
+        <a href="#" class="btn-outline">Explore Services</a>
+        <a href="#" class="btn-fill">See Our Products</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<section class="vision-section" id="vision-section">
+  <div class="vision-container">
+
+    <!-- LEFT TEXT CONTENT -->
+    <div class="vision-text">
+      <h1>Our Vision</h1>
+
+      <p>
+        We’re a small but sharp team focused on high-impact digital products and reliable tech
+        support for growing teams. From platform hosting to AI-assisted UI design, we back
+        founders, sellers, and early adopters.
+      </p>
+
+      <p>
+        We’re building solutions that simplify everyday experiences both online and offline.
+        <span class="highlight-orange">BlissMeeting</span> is our fallback-first communication
+        platform built to keep conversations flowing effortlessly. Whether you're on mobile or web,
+        you can switch instantly without missing a beat.
+      </p>
+
+      <p>
+        At the same time, we’re rolling out a car cleaning app,
+        <span class="highlight-green">Servoji</span> designed with your convenience in mind.
+        Available right within your residential community, it offers trusted, on-demand car care
+        at your doorstep so you can enjoy a spotless vehicle without disrupting your day.
+      </p>
+
+      <p class="vision-quote">
+        “Our mission began with a simple idea: that powerful technology should be within reach
+        of every innovator. So we set out to strip away the complexity and deliver solutions
+        that spark progress.”
+      </p>
+    </div>
+
+    <!-- RIGHT IMAGE / ILLUSTRATION -->
+    <div class="vision-image">
+      <img src="images/vision_img.png" alt="team_work">
+    </div>
+
+  </div>
+</section>
+
+<section class="flagship-section">
+ 
+    <img src="images/flagship-section.png" alt="">
     
+  <h1 class="flagship-title"> <img src="images/flagship-title-img.gif" alt="">Our flagship Products</h1>
+ <div class="flagship-wrapper">
+ 
+   <!-- LEFT SIDE - SERVOJI -->
+    <div class="flagship-left">
+      <h1 class="title">Servoji</h1>
+      <p>
+        Servoji is a smart protocol system starting with car cleaning, enabling
+        service partners to follow structured, time-bound processes and ensure
+        consistent quality.
+      </p>
 
-</body>
+     
+
+      <div class="product-images left-images">
+        <img src="images/flagship_mobile1.png" alt="" class="mobile1">
+        <img src="images/flagship_mobile2.png" alt="" class="mobile2">
+      </div>
+    </div>
+
+  <div class="flagship-center">
+     <a href="#" class="visit-btn dark">visit <span class="flagship-arrow">↗</span></a>
+      <a href="#" class="visit-btn1 light">visit <span  class="flagship-arrow">↗</span></a>
+  </div>
+
+      <!-- RIGHT SIDE - BLISSMEETING -->
+    <div class="flagship-right">
+      <div class="product-images right-images">
+        <img src="images/flagship_mobile3.png" alt="" class="mobile3">
+        <img src="images/flagship_mobile4.png" alt="" class="mobile4">
+      </div>
+    <h1 class="bliss-title">Blissmeeting</h1>
+      <p class="bliss-text">
+        A fallback-first video platform that seamlessly switches between
+        devices during connection drops. Ideal for hybrid teams,
+        freelancers, and low-bandwidth zones.
+      </p>
+    </div>
+ </div>
+</section>
+
+<section class="services-section">
+  <h1 class="main-heading">
+   <img src="images/service-section-heading.png" alt=""> Our High-Value Digital Services
+  </h1>
+
+  <h2 class="sub-heading">Services</h2>
+
+  <p class="services-desc">
+    From designing engaging interfaces to developing robust applications, we offer end-to-end technology services for your business
+  </p>
+
+  <div class="auto-slider-wrapper">
+  <div class="auto-slider-track" id="sliderTrack">
+
+      <!-- SERVICE CARD -->
+      <div class="service-card">
+        <img src="images/service-img1.jpg" />
+        <p>App Development</p>
+      </div>
+
+      <div class="service-card">
+        <img src="images/service-img2.jpg" />
+        <p>Web Development</p>
+      </div>
+
+      <div class="service-card">
+        <img src="images/service-img3.jpg" />
+        <p>UX Wireframing</p>
+      </div>
+
+      <div class="service-card">
+        <img src="images/service-img4.jpg" />
+        <p>IT Consulting</p>
+      </div>
+
+      <div class="service-card">
+        <img src="images/service-img5.jpg" />
+        <p>Design and Prototyping</p>
+      </div>
+
+    
+      <div class="service-card">
+        <img src="images/service-img6.jpg" />
+        <p>Graphic designing</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section class="foundation-section">
+
+  <h1 class="foundation-title">Foundation & Infrastructure</h1>
+
+  <div class="foundation-grid">
+
+    <!-- LEFT CONTENT -->
+    <div class="foundation-cards">
+
+      <div class="foundation-card">
+          <h3>Managed Server Infrastructure</h3>
+        <div class="icon">
+          <img src="images/foundation-icon1.png" alt="">
+        </div>
+       <p>
+          Experience reliable and optimized performance with our fully managed server infrastructure. We handle all aspects of server setup, configuration, and maintenance—ensuring your systems run smoothly, securely, and efficiently at all times.
+        </p>
+      </div>
+
+      <div class="foundation-card">
+         <h3>SSL & Custom Domain Setup</h3>
+        <div class="icon">
+          <img src="images/foundation-icon2.png" alt="">
+        </div>
+        <p>
+          Build trust and enhance your brand identity with our SSL and custom domain setup services. We secure your website with industry-standard encryption and configure your custom domain for a professional, branded online presence.
+        </p>
+      </div>
+
+      <div class="foundation-card">
+        <h3>24/7 Uptime Monitoring & Maintenance</h3>
+        <div class="icon">
+          <img src="images/foundation-icon3.png" alt="">
+        </div>
+         <p>
+          Stay online around the clock with continuous uptime monitoring and proactive maintenance. Our team ensures minimal downtime and immediate response to any issues, keeping your services running without interruption.
+        </p>
+      </div>
+ </div>
+
+   
+     <!-- CENTER BOTTOM CARD -->
+      <div class="foundation-center-card">
+        
+      <div class="foundation-card">
+         <h3>Security Patches & Updates</h3>
+        <div class="icon">
+          <img src="images/foundation-icon4.png" alt="">
+        </div>
+        <p>
+          Protect your systems from vulnerabilities with regular security patches and updates. We stay ahead of emerging threats by applying the latest protections and maintaining a secure, compliant environment.
+        </p>
+      </div>
+    <div class="foundation-image">
+      <img src="images/foundation-img.png" alt="">
+    </div>
+ </div>
+  </div>
+
+</section>
+
+<section class="growth-section">
+
+  <h1 class="growth-title">Growth & Optimization</h1>
+
+  <div class="growth-cards">
+
+    <!-- CARD 1 -->
+    <div class="growth-card">
+      <h3>UI/UX with AI</h3>
+
+      <div class="growth-icon">
+        <img src="images/growth-icon.png" alt="">
+      </div>
+
+      <ul>
+        <li>AI-Assisted Wireframe Analysis</li>
+        <li>Conversion-Optimized Copywriting</li>
+        <li>Responsive Design Adaptation</li>
+        <li>User Flow & Usability Audits</li>
+      </ul>
+    </div>
+
+    <!-- CARD 2 -->
+    <div class="growth-card">
+      <h3>Ecommerce Tech Help</h3>
+
+      <div class="growth-icon">
+        <img src="images/growth-icon1.png" alt="">
+      </div>
+
+      <ul>
+        <li>Shopify & WooCommerce Customization</li>
+        <li>Seamless Checkout Flow Optimization</li>
+        <li>Payment Gateway Integrations</li>
+        <li>Performance & Speed Boosts</li>
+      </ul>
+    </div>
+
+  </div>
+
+</section>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+    <script>
+function toggleMenu(){
+  document.getElementById("menu").classList.toggle("active");
+}
+</script>
+
+
+<script>
+const track = document.getElementById("sliderTrack");
+
+/* ✅ DUPLICATE SLIDES */
+track.innerHTML += track.innerHTML;
+
+/* ✅ AUTO CALCULATE EXACT WIDTH */
+let totalWidth = 0;
+const originalCards = track.children.length / 2;
+
+for (let i = 0; i < originalCards; i++) {
+  totalWidth += track.children[i].offsetWidth + 20;
+}
+
+/* ✅ SET CSS VARIABLE FOR PERFECT LOOP */
+track.style.setProperty("--scroll-width", `${totalWidth}px`);
+
+/* ✅ FADE-IN EFFECT */
+const serviceCards = document.querySelectorAll(".service-card");
+
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.style.opacity = "1";
+      entry.target.style.transform = "translateX(0)";
+    }
+  });
+}, { threshold: 0.3 });
+
+serviceCards.forEach(card => observer.observe(card));
+</script>
+
+
+
+
+  </body>
 </html>
