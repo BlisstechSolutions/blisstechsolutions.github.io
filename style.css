@@ -3482,6 +3482,7 @@ label{
   font-weight: 500;
   margin-top: 0.2rem;
   margin-bottom: 0.2rem;
+  font-size: 1rem;
 }
 input, select, textarea {
   width: 100%;
@@ -3490,8 +3491,13 @@ input, select, textarea {
   border-radius: 6px;
   border: 1px solid #D1D5DB;
   color:#333;
+  font-size: 1rem;
 }
 
+input::placeholder,
+textarea::placeholder {
+ font-size: 0.95rem;
+}
 textarea {
   height: 100px;
 }
@@ -3544,11 +3550,11 @@ select.filled-select {
   background-color: #e4e4e4 !important;
   color: #000 !important;
 
-  appearance: auto !important;
+ /* appearance: auto !important;
   -webkit-appearance: auto !important;
   -moz-appearance: auto !important;
 
-  background-image: initial !important;
+  background-image: initial !important;*/
 }
 
 select {
@@ -3868,14 +3874,17 @@ label{
  font-size: 1.2rem;
 }
 input, select, textarea {
- font-size: 1.1rem;
+ font-size: 1rem;
 }
-
+input::placeholder,
+textarea::placeholder {
+ font-size: 1rem;
+}
 textarea {
   height: 140px;
 }
 .checkbox {
- font-size: 1.1rem;
+ font-size: 1rem;
 }
 .checkbox .text{
   gap:8px;
