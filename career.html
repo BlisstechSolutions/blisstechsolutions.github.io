@@ -834,12 +834,34 @@ letter-spacing: 0.2px;
   cursor:pointer;
 }
 
+.contact-list{
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
 .contact-list li {
-  line-height: 1.6;
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+ 
   color:#dddbdb;
+ 
+}
+.contact-list li span{
+    margin-left:0.8rem;
+     display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  text-align: start;
+  
 }
 .contact-list li i{
- color:#ff6f00
+ color:#ff6f00;
+ font-size: 1rem;
+
+ 
+ 
 }
 .investment-section{
   display: flex;
@@ -927,7 +949,9 @@ letter-spacing: 0.2px;
   text-decoration: none;
   font-weight: 500;
 }
-
+.investment_desc p{
+  margin-left: 1.5rem;
+}
 /* Bottom */
 .footer-bottom {
   margin-top: 30px;
@@ -1534,11 +1558,12 @@ letter-spacing: 0.2px;
     <div class="footer-col">
       <h4>Contact</h4>
       <ul class="contact-list">
-        <li> <i class="fa-solid fa-envelope" class="email-icon"></i> support@blisstechsolutions.in</li>
-        <li><i class="fa-solid fa-phone"></i> +91 0114168741</li>
-        <li><i class="fa-solid fa-location-dot"></i> 55, 3rd Floor, Lane-2, Westend Marg, Saidulajab, Gadaipur, New Delhi – 110030</li>
+        <li> <i class="fa-solid fa-envelope" class="email-icon"></i> <span>
+          support@blisstechsolutions.in</span></li>
+        <li><i class="fa-solid fa-phone"></i><span> +91 0114168741</span></li>
+        <li><i class="fa-solid fa-location-dot"></i><span> 55, 3rd Floor, Lane-2, Westend Marg, Saidulajab, Gadaipur, New Delhi – 110030</span></li>
         <li> <img src="images/footer_icon.png" alt="">
-         CIN No: U62013DL2024PTC437479</li>
+        <span> CIN No: U62013DL2024PTC437479</span></li>
       </ul>
     </div>
 
@@ -1699,7 +1724,7 @@ letter-spacing: 0.2px;
 
   <!-- Bottom -->
   <div class="footer-bottom">
-    <p>© 2025 Blisstech Solutions Pvt. Ltd. All Rights Reserved.</p>
+    <p>© 2026 Blisstech Solutions Pvt. Ltd. All Rights Reserved.</p>
     <span><img src="images/footer_bottom.png" alt=""> Services Available 24/7</span>
   </div>
 </footer>

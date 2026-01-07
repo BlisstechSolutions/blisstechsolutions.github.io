@@ -310,7 +310,7 @@ body{
   border: 1px solid #ddd;
   border-radius: 8px;
   padding: 8px 14px;
-  font-size: 1.06rem;
+  font-size: 1rem;
   cursor: pointer;
   color: #494949;
   font-weight: 600;
@@ -446,7 +446,7 @@ body{
 
 /* Search */
 .search-box {
-  padding: 14px 22px;
+  padding: 12px 22px;
   cursor: pointer;
 }
 .search-box i{
@@ -458,8 +458,8 @@ body{
 }
 .tab {
    gap: 12px;
-  padding: 12px 24px;
-  font-size: 1.3rem;
+  padding: 10px 22px;
+  font-size: 1.15rem;
 }
 .tab:hover {
   transform: translateY(-3px);
@@ -1021,12 +1021,34 @@ h3 {
   cursor:pointer;
 }
 
+.contact-list{
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
 .contact-list li {
-  line-height: 1.6;
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+ 
   color:#dddbdb;
+ 
+}
+.contact-list li span{
+    margin-left:0.8rem;
+     display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  text-align: start;
+  
 }
 .contact-list li i{
- color:#ff6f00
+ color:#ff6f00;
+ font-size: 1rem;
+
+ 
+ 
 }
 .investment-section{
   display: flex;
@@ -1114,7 +1136,9 @@ h3 {
   text-decoration: none;
   font-weight: 500;
 }
-
+.investment_desc p{
+  margin-left: 1.5rem;
+}
 /* Bottom */
 .footer-bottom {
   margin-top: 30px;
@@ -1660,7 +1684,7 @@ h3 {
  <!-- CARD 3 -->
   <div class="news-card">
     <div class="card-image rasor">
-        <span class="badge1">PRODUCT</span>
+        <span class="badge1">PARTNER</span>
      <span class="menu"><img src="images/feed_card_icon.png" alt=""></span>
     <img src="images/feed_card3.png" alt="Product"> 
     </div>
@@ -1807,11 +1831,13 @@ h3 {
     <div class="footer-col">
       <h4>Contact</h4>
       <ul class="contact-list">
-        <li> <i class="fa-solid fa-envelope" class="email-icon"></i> support@blisstechsolutions.in</li>
-        <li><i class="fa-solid fa-phone"></i> +91 0114168741</li>
-        <li><i class="fa-solid fa-location-dot"></i> 55, 3rd Floor, Lane-2, Westend Marg, Saidulajab, Gadaipur, New Delhi – 110030</li>
+        <li> <i class="fa-solid fa-envelope" class="email-icon"></i> <span>support@blisstechsolutions.in</span></li>
+        <li><i class="fa-solid fa-phone"></i><span> +91 0114168741</span></li>
+        <li><i class="fa-solid fa-location-dot"></i><span> 55, 3rd Floor, Lane-2, Westend Marg, Saidulajab, Gadaipur, New Delhi – 110030</span></li>
         <li> <img src="images/footer_icon.png" alt="">
-         CIN No: U62013DL2024PTC437479</li>
+        <span>CIN No: U62013DL2024PTC437479</span>
+
+        </li>
       </ul>
     </div>
 
@@ -1972,7 +1998,7 @@ h3 {
 
   <!-- Bottom -->
   <div class="footer-bottom">
-    <p>© 2025 Blisstech Solutions Pvt. Ltd. All Rights Reserved.</p>
+    <p>© 2026 Blisstech Solutions Pvt. Ltd. All Rights Reserved.</p>
     <span><img src="images/footer_bottom.png" alt=""> Services Available 24/7</span>
   </div>
 </footer>
